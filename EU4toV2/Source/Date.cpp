@@ -24,6 +24,8 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 #include "Date.h"
 #include <vector>
 #include "Parsers/Object.h"
+#include "OSCompatabilityLayer.h"
+
 using namespace std;
 
 

@@ -17,6 +17,7 @@ set(source
   Source/targa.cpp
   Source/tempFuncs.cpp
   Source/WinUtils.cpp
+  Source/OSCompatabilityLayer.cpp
   Source/EU4World/EU4Army.cpp
   Source/EU4World/EU4Country.cpp
   Source/EU4World/EU4Diplomacy.cpp
