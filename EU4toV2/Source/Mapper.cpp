@@ -24,12 +24,12 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 #include "Mapper.h"
 #include "Log.h"
 #include "Configuration.h"
-#include "Parsers\Object.h"
-#include "EU4World\EU4World.h"
-#include "EU4World\EU4Country.h"
-#include "EU4World\EU4Province.h"
-#include "V2World\V2World.h"
-#include "V2World\V2Country.h"
+#include "Parsers/Object.h"
+#include "EU4World/EU4World.h"
+#include "EU4World/EU4Country.h"
+#include "EU4World/EU4Province.h"
+#include "V2World/V2World.h"
+#include "V2World/V2Country.h"
 #include <algorithm>
 #include <sys/stat.h>
 

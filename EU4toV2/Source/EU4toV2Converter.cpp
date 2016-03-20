@@ -30,14 +30,14 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 
 #include "Configuration.h"
 #include "Log.h"
-#include "Parsers\Parser.h"
-#include "EU4World\EU4World.h"
-#include "EU4World\EU4Religion.h"
-#include "EU4World\EU4Localisation.h"
-#include "V2World\V2World.h"
-#include "V2World\V2Factory.h"
-#include "V2World\V2TechSchools.h"
-#include "V2World\V2LeaderTraits.h"
+#include "Parsers/Parser.h"
+#include "EU4World/EU4World.h"
+#include "EU4World/EU4Religion.h"
+#include "EU4World/EU4Localisation.h"
+#include "V2World/V2World.h"
+#include "V2World/V2Factory.h"
+#include "V2World/V2TechSchools.h"
+#include "V2World/V2LeaderTraits.h"
 #include "WinUtils.h"
 
 

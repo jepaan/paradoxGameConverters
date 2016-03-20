@@ -28,7 +28,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 #include <set>
 #include <string>
 #include <vector>
-#include "..\Mapper.h"
+#include "../Mapper.h"
 
 class V2Country;
 

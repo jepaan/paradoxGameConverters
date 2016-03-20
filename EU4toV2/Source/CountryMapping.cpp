@@ -32,14 +32,14 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 
 #include <boost/algorithm/string.hpp>
 
-#include "EU4World\EU4World.h"
-#include "EU4World\EU4Country.h"
-#include "EU4World\EU4Province.h"
-#include "Parsers\Object.h"
-#include "Parsers\Parser.h"
-#include "V2World\V2World.h"
-#include "V2World\V2Country.h"
-#include "V2World\V2Province.h"
+#include "EU4World/EU4World.h"
+#include "EU4World/EU4Country.h"
+#include "EU4World/EU4Province.h"
+#include "Parsers/Object.h"
+#include "Parsers/Parser.h"
+#include "V2World/V2World.h"
+#include "V2World/V2Country.h"
+#include "V2World/V2Province.h"
 #include "WinUtils.h"
 #include "Log.h"
 

@@ -34,7 +34,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 #include "../Configuration.h"
 #include "../Parsers/Parser.h"
 #include "../EU4World/EU4World.h"
-#include "../EU4World/Eu4Country.h"
+#include "../EU4World/EU4Country.h"
 #include "../EU4World/EU4Province.h"
 #include "../EU4World/EU4Relations.h"
 #include "../EU4World/EU4Leader.h"
