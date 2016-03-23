@@ -24,20 +24,16 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 #ifndef EU4VERSION_H_
 #define EU4VERSION_H_
 
-
-#include "../Parsers/Object.h"
 #include <string>
-using namespace std;
-
-
+#include "../Parsers/Object.h"
 
 class EU4Version
 {
 	public:
 		EU4Version();
 		EU4Version(Object* obj);
-		EU4Version(string version);
-		bool operator >= (EU4Version& rhs) const;
+		EU4Version(std::string version);
+		bool operator >= (const EU4Version& rhs) const;
 	private:
 		int	first;		// the first part of the version number
 		int	second;		// the second part of the version number

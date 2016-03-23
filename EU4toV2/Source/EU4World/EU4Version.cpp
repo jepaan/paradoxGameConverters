@@ -80,7 +80,7 @@ EU4Version::EU4Version(string version)
 }
 
 
-bool EU4Version::operator >= (EU4Version& rhs) const
+bool EU4Version::operator >= (const EU4Version& rhs) const
 {
 	if (first > rhs.first)
 	{
