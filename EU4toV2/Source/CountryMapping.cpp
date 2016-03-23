@@ -19,9 +19,9 @@ CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 
+#include "OSCompatabilityLayer.h"
 
 
-#include "CountryMapping.h"
 
 #include <algorithm>
 #include <iomanip>
@@ -40,8 +40,9 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 #include "V2World/V2World.h"
 #include "V2World/V2Country.h"
 #include "V2World/V2Province.h"
-#include "WinUtils.h"
 #include "Log.h"
+
+#include "CountryMapping.h"
 
 bool CountryMapping::ReadRules(const std::string& fileName)
 {
