@@ -19,14 +19,16 @@ CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 
-
+#include "OSCompatabilityLayer.h"
 
 #include <fstream>
-#include <io.h>
+#include <sys/io.h>
 #include <stdexcept>
-#include <sys/stat.h>
+#include <string>
+#include <stdio.h>
+#include <stdlib.h>
 
-#include <Windows.h>
+//#include <Windows.h>
 
 #include "Configuration.h"
 #include "Log.h"
@@ -38,6 +40,8 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 #include "V2World/V2Factory.h"
 #include "V2World/V2TechSchools.h"
 #include "V2World/V2LeaderTraits.h"
+
+
 #include "WinUtils.h"
 
 
@@ -76,8 +80,9 @@ int ConvertEU4ToV2(const std::string& EU4SaveFileName)
 	// Get V2 install location
 	LOG(LogLevel::Info) << "Get V2 Install Path";
 	string V2Loc = Configuration::getV2Path();	// the V2 install location as stated in the configuration file
-	struct _stat st;										// the file info
-	if (V2Loc.empty() || (_stat(V2Loc.c_str(), &st) != 0))
+	_stat st;										// the file info
+	int statRet = GetStat(V2Loc.c_str(), &st);
+	if (V2Loc.empty() || statRet != 0) 
 	{
 		LOG(LogLevel::Error) << "No Victoria 2 path was specified in configuration.txt, or the path was invalid";
 		return (-1);
@@ -90,7 +95,8 @@ int ConvertEU4ToV2(const std::string& EU4SaveFileName)
 	// Get V2 Documents Directory
 	LOG(LogLevel::Debug) << "Get V2 Documents directory";
 	string V2DocLoc = Configuration::getV2DocumentsPath();	// the V2 My Documents location as stated in the configuration file
-	if (V2DocLoc.empty() || (_stat(V2DocLoc.c_str(), &st) != 0))
+        statRet = GetStat(V2DocLoc.c_str(), &st);
+	if (V2DocLoc.empty() || statRet != 0)
 	{
 		LOG(LogLevel::Error) << "No Victoria 2 documents directory was specified in configuration.txt, or the path was invalid";
 		return (-1);
@@ -103,7 +109,8 @@ int ConvertEU4ToV2(const std::string& EU4SaveFileName)
 	// Get EU4 install location
 	LOG(LogLevel::Debug) << "Get EU4 Install Path";
 	string EU4Loc = Configuration::getEU4Path();	// the EU4 install location as stated in the configuration file
-	if (EU4Loc.empty() || (_stat(EU4Loc.c_str(), &st) != 0))
+        statRet = GetStat(EU4Loc.c_str(), &st);
+	if (EU4Loc.empty() || statRet != 0)
 	{
 		LOG(LogLevel::Error) << "No Europa Universalis 4 path was specified in configuration.txt, or the path was invalid";
 		return (-1);
@@ -117,7 +124,8 @@ int ConvertEU4ToV2(const std::string& EU4SaveFileName)
 	map<string, string> possibleMods; // name, path
 	LOG(LogLevel::Debug) << "Get EU4 Mod Directory";
 	string EU4DocumentsLoc = Configuration::getEU4DocumentsPath();	// the EU4 My Documents location as stated in the configuration file
-	if (EU4DocumentsLoc.empty() || (_stat(EU4DocumentsLoc.c_str(), &st) != 0))
+        statRet = GetStat(EU4Loc.c_str(), &st);
+	if (EU4DocumentsLoc.empty() || statRet != 0)
 	{
 		LOG(LogLevel::Error) << "No Europa Universalis 4 documents directory was specified in configuration.txt, or the path was invalid";
 		return (-1);
@@ -172,7 +180,8 @@ int ConvertEU4ToV2(const std::string& EU4SaveFileName)
 	// Get CK2 Export directory
 	LOG(LogLevel::Debug) << "Get CK2 Export Directory";
 	string CK2ExportLoc = Configuration::getCK2ExportPath();		// the CK2 converted mods location as stated in the configuration file
-	if (CK2ExportLoc.empty() || (_stat(CK2ExportLoc.c_str(), &st) != 0))
+        statRet = GetStat(EU4Loc.c_str(), &st);
+	if (CK2ExportLoc.empty() || statRet != 0)
 	{
 		LOG(LogLevel::Warning) << "No Crusader Kings 2 mod directory was specified in configuration.txt, or the path was invalid - this will cause problems with CK2 converted saves";
 	}
@@ -293,7 +302,8 @@ int ConvertEU4ToV2(const std::string& EU4SaveFileName)
 				if (modItr != possibleMods.end())
 				{
 					string newModPath = modItr->second;	// the path for this mod
-					if (newModPath.empty() || (_stat(newModPath.c_str(), &st) != 0))
+					statRet = GetStat(newModPath.c_str(), &st);
+					if (newModPath.empty() || statRet != 0)
 					{
 						LOG(LogLevel::Error) << newMod << " could not be found in the specified mod directory - a valid mod directory must be specified. Tried " << newModPath;
 						exit(-1);
@@ -560,7 +570,8 @@ int ConvertEU4ToV2(const std::string& EU4SaveFileName)
 	for (vector<string>::iterator itr = fullModPaths.begin(); itr != fullModPaths.end(); itr++)
 	{
 		string continentFile = *itr + "\\map\\continent.txt";	// the path and name of the continent file
-		if ((_stat(continentFile.c_str(), &st) == 0))
+                statRet = GetStat(continentFile.c_str(), &st);
+		if (statRet == 0)
 		{
 			Object* continentObject = doParseFile(continentFile.c_str());
 			if ((continentObject != NULL) && (continentObject->getLeaves().size() > 0))
@@ -592,7 +603,8 @@ int ConvertEU4ToV2(const std::string& EU4SaveFileName)
 	// Generate region mapping
 	LOG(LogLevel::Info) << "Parsing region structure";
 	Object* Vic2RegionsObj;
-	if (_stat(".\\blankMod\\output\\map\\region.txt", &st) == 0)
+        statRet = GetStat(".\\blankMod\\output\\map\\region.txt", &st);
+	if (statRet == 0)
 	{
 		Vic2RegionsObj = doParseFile(".\\blankMod\\output\\map\\region.txt");
 		if (Vic2RegionsObj == NULL)
@@ -653,7 +665,8 @@ int ConvertEU4ToV2(const std::string& EU4SaveFileName)
 				else
 				{
 					string modReligionFile(*itr + "\\common\\religions\\" + fileData.name);	// the path and name of the religions file in this mod
-					if ((_stat(modReligionFile.c_str(), &st) == 0))
+                                        statRet = GetStat(modReligionFile.c_str(), &st);
+					if (statRet == 0)
 					{
 						religionsObj = doParseFile(modReligionFile.c_str());
 						if (religionsObj == NULL)
@@ -811,7 +824,8 @@ int ConvertEU4ToV2(const std::string& EU4SaveFileName)
 				else
 				{
 					string modRegionsFile(*itr + "\\common\\colonial_regions\\" + fileData.name);	// the path and name of the colonial regions file in this mod
-					if ((_stat(modRegionsFile.c_str(), &st) == 0))
+                                        statRet = GetStat(modRegionsFile.c_str(),, &st);
+					if (statRet == 0)
 					{
 						colonialRegionsObj = doParseFile(modRegionsFile.c_str());
 						if (colonialRegionsObj == NULL)
@@ -845,7 +859,8 @@ int ConvertEU4ToV2(const std::string& EU4SaveFileName)
 	for (vector<string>::iterator itr = fullModPaths.begin(); itr != fullModPaths.end(); itr++)
 	{
 		string modRegionFile(*itr + "\\map\\region.txt");
-		if ((_stat(modRegionFile.c_str(), &st) == 0))
+		statRet = GetStat(modRegionFile.c_str(), &st);
+		if (statRet == 0)
 		{
 			regionsObj = doParseFile(modRegionFile.c_str());
 			if (regionsObj == NULL)
@@ -873,7 +888,8 @@ int ConvertEU4ToV2(const std::string& EU4SaveFileName)
 		for (vector<string>::iterator itr = fullModPaths.begin(); itr != fullModPaths.end(); itr++)
 		{
 			string modAreaFile(*itr + "\\map\\area.txt");
-			if ((_stat(modAreaFile.c_str(), &st) == 0))
+                        statRet = GetStat(modAreaFile.c_str(), &st);
+			if (statRet == 0)
 			{
 				areaObj = doParseFile(modAreaFile.c_str());
 				if (areaObj == NULL)

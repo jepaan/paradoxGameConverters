@@ -20,8 +20,9 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 
 
-
-#include "Mapper.h"
+#include "OSCompatabilityLayer.h"
+#include <algorithm>
+#include <sys/stat.h>
 #include "Log.h"
 #include "Configuration.h"
 #include "Parsers/Object.h"
@@ -30,8 +31,8 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 #include "EU4World/EU4Province.h"
 #include "V2World/V2World.h"
 #include "V2World/V2Country.h"
-#include <algorithm>
-#include <sys/stat.h>
+
+#include "Mapper.h"
 
 
 void initProvinceMap(Object* obj, const EU4Version* version, provinceMapping& provinceMap, provinceMapping& inverseProvinceMap, resettableMap& resettableProvinces)
@@ -159,8 +160,9 @@ adjacencyMapping initAdjacencyMap()
 {
 	FILE* adjacenciesBin = NULL;	// the adjacencies.bin file
 	string filename = Configuration::getV2DocumentsPath() + "\\map\\cache\\adjacencies.bin";	// the path and filename for adjacencies.bin
-	struct _stat st;	// the data structure telling us if the file exists
-	if ((_stat(filename.c_str(), &st) != 0))
+	_stat st;	// the data structure telling us if the file exists
+	int statRet = GetStat(filename.c_str(), &st);
+	if (statRet != 0)
 	{
 		LOG(LogLevel::Warning) << "Could not find " << filename << " - looking in install folder";
 		filename = Configuration::getV2Path() + "\\map\\cache\\adjacencies.bin";
