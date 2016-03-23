@@ -184,4 +184,51 @@ int DeleteFolder(const std::string &refcstrRootDirectory,
 	return 0;
 }
 
+void WriteToConsole(int level, const std::string& logMessage)
+{
+	if (level == LogLevel::Debug)
+	{	// Don't log debug messages to console.
+		return;
+	}
+
+	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);	// a handle to the console window
+	if (console != INVALID_HANDLE_VALUE)
+	{
+		CONSOLE_SCREEN_BUFFER_INFO oldConsoleInfo;	// the current (soon to be outdated) console data
+		BOOL success = GetConsoleScreenBufferInfo(console, &oldConsoleInfo);	// whether or not the console data could be retrieved
+		if (success)
+		{
+			WORD color;	// the color the text will be
+			switch (level)
+			{
+				case LogLevel::Error:
+					color = FOREGROUND_RED | FOREGROUND_INTENSITY;
+					break;
+
+				case LogLevel::Warning:
+					color = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY;
+					break;
+
+				case LogLevel::Info:
+					color = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY;
+					break;
+
+				case LogLevel::Debug:
+					color = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE;
+					break;
+			}
+			SetConsoleTextAttribute(console, color);
+			DWORD bytesWritten = 0;
+			WriteConsoleA(console, logMessage.c_str(), logMessage.size(), &bytesWritten, NULL);
+
+			// Restore old console color.
+			SetConsoleTextAttribute(console, oldConsoleInfo.wAttributes);
+
+			return;
+		}
+	}
+
+	std::cout << logMessage;
+}
+
 } // namespace WinUtils
