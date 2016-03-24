@@ -4,7 +4,10 @@
 #ifdef __linux__
 void sprintf_s_Linux (char *__restrict __s, size_t __maxlen, const char *__restrict __format, ...)
 {
-  snprintf(__s, __maxlen, __format, ...);
+  va_list argptr;
+  va_start(argptr, format);
+  snprintf(__s, __maxlen, __format, argptr);
+  va_end(argptr);
 }
 
 void strcpy_s_Linux(char *__restrict __dest, const char *__restrict __src)
@@ -12,7 +15,7 @@ void strcpy_s_Linux(char *__restrict __dest, const char *__restrict __src)
   strcpy(__dest, __src);
 }
 
-handle GetStdHandle(int nothing)
+HANDLE GetStdHandle(int nothing)
 {
   return 1;
 }

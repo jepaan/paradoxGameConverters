@@ -27,7 +27,8 @@ void sprintf_s_Linux (char *__restrict __s, size_t __maxlen, const char *__restr
 #define strcpy_s strcpy_s_Linux
 void strcpy_s_Linux(char *__restrict __dest, const char *__restrict __src);
 
-#define fopen_s fopen
+#define fopen_s fopen_s_Linux
+void fopen_s_Linux(FILE**, const char* filename, const char* mode);
 typedef struct stat _stat;
 
 typedef uint64_t HANDLE;
@@ -41,7 +42,7 @@ typedef int errno_t;
 
 #ifdef __WIN32
 #include <Windows.h>
-typedef struct _stat stat; //Not sure about this.
+//typedef struct _stat stat; //Not sure about this.
 #endif //__WIN32
 
 typedef bool (*TryCreateFolderFunc)(const std::string&);
