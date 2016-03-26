@@ -20,9 +20,6 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 
 
-
-#include "V2Flags.h"
-
 #include <chrono>
 #include <iostream>
 #include <iterator>
@@ -30,12 +27,14 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 
 #include <boost/algorithm/string/predicate.hpp>
 
-#include "..\EU4World\EU4Country.h"
+#include "../EU4World/EU4Country.h"
 #include "V2Country.h"
-#include "..\Configuration.h"
-#include "..\Log.h"
-#include "..\WinUtils.h"
-#include "..\FlagUtils.h"
+#include "../Configuration.h"
+#include "../Log.h"
+#include "../WinUtils.h"
+#include "../FlagUtils.h"
+
+#include "V2Flags.h"
 
 const std::vector<std::string> V2Flags::flagFileSuffixes = { ".tga", "_communist.tga", "_fascist.tga", "_monarchy.tga", "_republic.tga" };
 
