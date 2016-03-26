@@ -41,17 +41,17 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
  TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 
+#include "../OSCompatabilityLayer.h"
 
-
-#include "Object.h"
-#include "Parser.h"
 #include <sstream> 
 #include <fstream>
 #include <algorithm>
 #include <iostream>
 #include <assert.h>
 
+#include "Parser.h"
 
+#include "Object.h"
 
 Object::Object(string k) :
 objects(),
