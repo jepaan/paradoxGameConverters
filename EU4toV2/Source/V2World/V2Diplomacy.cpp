@@ -19,8 +19,9 @@ CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 
-#include "../OSCompatabilityLayer.h"
+#include <boost/filesystem.hpp>
 
+#include "../OSCompatabilityLayer.h"
 #include "V2Diplomacy.h"
 #include "../Log.h"
 #include "../Configuration.h"
@@ -30,35 +31,44 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 void V2Diplomacy::output() const
 {
 	LOG(LogLevel::Debug) << "Writing diplomacy";
-
-	FILE* alliances;
-	if (fopen_s(&alliances, ("Output\\" + Configuration::getOutputName() + "\\history\\diplomacy\\Alliances.txt").c_str(), "w") != 0)
+        string alliancePath = "Output\\" + Configuration::getOutputName() + "\\history\\diplomacy\\Alliances.txt";
+        boost::filesystem::file_status st = boost::filesystem::status(alliancePath);
+        if(!boost::filesystem::exists(st))
 	{
 		LOG(LogLevel::Error) << "Could not create alliances history file";
 		exit(-1);
 	}
-
-	FILE* guarantees;
-	if (fopen_s(&guarantees, ("Output\\" + Configuration::getOutputName() + "\\history\\diplomacy\\Guarantees.txt").c_str(), "w") != 0)
+        string guaranteesPath = "Output\\" + Configuration::getOutputName() + "\\history\\diplomacy\\Guarantees.txt";
+	st = boost::filesystem::status(alliancePath);
+	if(!boost::filesystem::exists(st))
 	{
 		LOG(LogLevel::Error) << "Could not create guarantees history file";
 		exit(-1);
 	}
-
-	FILE* puppetStates;
-	if (fopen_s(&puppetStates, ("Output\\" + Configuration::getOutputName() + "\\history\\diplomacy\\PuppetStates.txt").c_str(), "w") != 0)
+        
+	string puppetStatesPath = "Output\\" + Configuration::getOutputName() + "\\history\\diplomacy\\PuppetStates.txt";
+        st = boost::filesystem::status(puppetStatesPath);
+	if(!boost::filesystem::exists(st))
 	{
 		LOG(LogLevel::Error) << "Could not create puppet states history file";
 		exit(-1);
 	}
 
-	FILE* unions;
-	if (fopen_s(&unions, ("Output\\" + Configuration::getOutputName() + "\\history\\diplomacy\\Unions.txt").c_str(), "w") != 0)
+	string unionsPath = "Output\\" + Configuration::getOutputName() + "\\history\\diplomacy\\Unions.txt";
+        st = boost::filesystem::status(unionsPath);
+	if(!boost::filesystem::exists(st))
 	{
 		LOG(LogLevel::Error) << "Could not create unions history file";
 		exit(-1);
 	}
-	
+	FILE* alliances;
+        fopen_s(&alliances, alliancePath.c_str(), "w");
+        FILE* guarantees;
+        fopen_s(&guarantees, guaranteesPath.c_str(), "w");
+        FILE* puppetStates;
+        fopen_s(&puppetStates, puppetStatesPath.c_str(), "w");
+        FILE* unions;
+        fopen_s(&unions, unionsPath.c_str(), "w");
 	FILE* out;
 	for (vector<V2Agreement>::const_iterator itr = agreements.begin(); itr != agreements.end(); ++itr)
 	{
