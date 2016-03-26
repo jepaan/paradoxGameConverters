@@ -21,12 +21,12 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 
 
 
-#include "EU4Localisation.h"
+#include "../OSCompatabilityLayer.h"
 
 #include <fstream>
 #include <vector>
 
-#include <Windows.h>
+#include "EU4Localisation.h"
 
 void EU4Localisation::ReadFromFile(const std::string& fileName)
 {

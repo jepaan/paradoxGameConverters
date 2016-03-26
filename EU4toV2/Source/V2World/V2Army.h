@@ -26,7 +26,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 
 
 
-#include "../Eu4World/EU4Army.h"
+#include "../EU4World/EU4Army.h"
 
 
 
@@ -94,4 +94,5 @@ class V2Army // also Navy
 
 
 
-#endif
+#endif //V2ARMY_H_
+
