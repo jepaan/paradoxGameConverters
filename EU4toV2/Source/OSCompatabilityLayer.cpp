@@ -1,4 +1,5 @@
 #include <stdarg.h>
+#include <stdio.h>
 
 #include "OSCompatabilityLayer.h"
 
@@ -15,6 +16,12 @@ void sprintf_s_Linux (char *__restrict __s, size_t __maxlen, const char *__restr
 void strcpy_s_Linux(char *__restrict __dest, const char *__restrict __src)
 {
   strcpy(__dest, __src);
+}
+
+int fopen_s_Linux(FILE** file, const char* filename, const char* mode)
+{
+  *file = fopen(filename, mode);
+  return *file != NULL;
 }
 
 HANDLE GetStdHandle(int nothing)

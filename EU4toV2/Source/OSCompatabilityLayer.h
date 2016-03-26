@@ -27,9 +27,10 @@ void sprintf_s_Linux (char *__restrict __s, size_t __maxlen, const char *__restr
 #define strcpy_s strcpy_s_Linux
 void strcpy_s_Linux(char *__restrict __dest, const char *__restrict __src);
 
+
+//Very basic implementation, simply returns 0 if FILE* is not NULL
 #define fopen_s fopen_s_Linux
-void fopen_s_Linux(FILE**, const char* filename, const char* mode);
-//typedef struct stat _stat;
+int fopen_s_Linux(FILE** file, const char* filename, const char* mode);
 
 typedef uint64_t HANDLE;
 #define STD_OUTPUT_HANDLE -11
