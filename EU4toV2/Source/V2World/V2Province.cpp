@@ -27,6 +27,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 
 #include <boost/filesystem.hpp>
 
+#include "../OSCompatabilityLayer.h"
 #include "../Log.h"
 #include "../Parsers/Object.h"
 #include "../Parsers/Parser.h"
