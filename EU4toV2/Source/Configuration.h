@@ -28,9 +28,6 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 #include <vector>
 #include <string>
 #include "Date.h"
-using namespace std;
-
-
 
 class Configuration // Singleton
 {

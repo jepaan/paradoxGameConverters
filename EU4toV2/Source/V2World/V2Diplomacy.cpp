@@ -31,14 +31,14 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 void V2Diplomacy::output() const
 {
 	LOG(LogLevel::Debug) << "Writing diplomacy";
-        string alliancePath = "Output\\" + Configuration::getOutputName() + "\\history\\diplomacy\\Alliances.txt";
+        std::string alliancePath = "Output\\" + Configuration::getOutputName() + "\\history\\diplomacy\\Alliances.txt";
         boost::filesystem::file_status st = boost::filesystem::status(alliancePath);
         if(!boost::filesystem::exists(st))
 	{
 		LOG(LogLevel::Error) << "Could not create alliances history file";
 		exit(-1);
 	}
-        string guaranteesPath = "Output\\" + Configuration::getOutputName() + "\\history\\diplomacy\\Guarantees.txt";
+        std::string guaranteesPath = "Output\\" + Configuration::getOutputName() + "\\history\\diplomacy\\Guarantees.txt";
 	st = boost::filesystem::status(alliancePath);
 	if(!boost::filesystem::exists(st))
 	{
@@ -46,7 +46,7 @@ void V2Diplomacy::output() const
 		exit(-1);
 	}
         
-	string puppetStatesPath = "Output\\" + Configuration::getOutputName() + "\\history\\diplomacy\\PuppetStates.txt";
+	std::string puppetStatesPath = "Output\\" + Configuration::getOutputName() + "\\history\\diplomacy\\PuppetStates.txt";
         st = boost::filesystem::status(puppetStatesPath);
 	if(!boost::filesystem::exists(st))
 	{
@@ -54,7 +54,7 @@ void V2Diplomacy::output() const
 		exit(-1);
 	}
 
-	string unionsPath = "Output\\" + Configuration::getOutputName() + "\\history\\diplomacy\\Unions.txt";
+	std::string unionsPath = "Output\\" + Configuration::getOutputName() + "\\history\\diplomacy\\Unions.txt";
         st = boost::filesystem::status(unionsPath);
 	if(!boost::filesystem::exists(st))
 	{
