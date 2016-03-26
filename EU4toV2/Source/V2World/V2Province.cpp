@@ -19,6 +19,14 @@ CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 
+
+#include <sstream>
+#include <algorithm>
+#include <string>
+#include <stdio.h>
+
+#include <boost/filesystem.hpp>
+
 #include "../Log.h"
 #include "../Parsers/Object.h"
 #include "../Parsers/Parser.h"
@@ -27,11 +35,6 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 #include "V2Pop.h"
 #include "V2Country.h"
 #include "V2Factory.h"
-#include <sstream>
-#include <algorithm>
-#include <string>
-#include <stdio.h>
-#include <sys/stat.h>
 
 #include "V2Province.h"
 
@@ -80,8 +83,9 @@ V2Province::V2Province(std::string _filename)
 	num				= atoi(temp.c_str());
 
 	Object* obj;
-	struct _stat st;
-	if (_stat((std::string(".\\blankMod\\output\\history\\provinces") + _filename).c_str(), &st) == 0)
+        std::string path = ".\\blankMod\\output\\history\\provinces" + _filename;
+        boost::filesystem::file_status st = boost::filesystem::status(path);
+        if(boost::filesystem::exists(st))
 	{
 		obj = doParseFile((std::string(".\\blankMod\\output\\history\\provinces") + _filename).c_str());
 		if (obj == NULL)
