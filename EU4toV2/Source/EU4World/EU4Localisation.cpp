@@ -21,10 +21,14 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 
 
 
-#include "../OSCompatabilityLayer.h"
+
 
 #include <fstream>
 #include <vector>
+
+#include <boost/filesystem.hpp>
+
+#include "../OSCompatabilityLayer.h"
 
 #include "EU4Localisation.h"
 
@@ -64,21 +68,14 @@ void EU4Localisation::ReadFromAllFilesInFolder(const std::string& folderPath)
 {
 	// Get all files in the folder.
 	std::vector<std::string> fileNames;
-	WIN32_FIND_DATA findData;	// the file data
-	HANDLE findHandle = FindFirstFile((folderPath + "\\*").c_str(), &findData);	// the find handle
-	if (findHandle == INVALID_HANDLE_VALUE)
-	{
-		return;
-	}
-	do
-	{
-		if (!(findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
-		{
-			fileNames.push_back(findData.cFileName);
-		}
-	} while (FindNextFile(findHandle, &findData) != 0);
-	FindClose(findHandle);
-
+        if(!boost::filesystem::exists(folderPath) || !boost::filesystem::is_directory(folderPath))
+        {
+          return;
+        }
+        for(boost::filesystem::directory_entry& file : boost::filesystem::directory_iterator(folderPath))
+        {
+          fileNames.push_back(file.path().native());
+        }
 	// Read all these files.
 	for (const auto& fileName : fileNames)
 	{
