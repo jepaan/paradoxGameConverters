@@ -29,7 +29,7 @@ void strcpy_s_Linux(char *__restrict __dest, const char *__restrict __src);
 
 #define fopen_s fopen_s_Linux
 void fopen_s_Linux(FILE**, const char* filename, const char* mode);
-typedef struct stat _stat;
+//typedef struct stat _stat;
 
 typedef uint64_t HANDLE;
 #define STD_OUTPUT_HANDLE -11
@@ -53,8 +53,10 @@ void InitOSCompatabilityLayer();
 
 bool TryCreateFolder(const std::string& path);
 void GetCurrentDirectory(uint32_t length, char directory[MAX_PATH]);
+bool TryCopyFile(const std::string& sourcePath, const std::string& destPath);
+
 void WriteToConsoleUtil(LogLevel level, const std::string& logMessage);
-int GetStat(const char* path, _stat* stat);
+//int GetStat(const char* path, _stat* stat);
 
 
 #endif //OS_COMPATABILITY_LAYER_H

@@ -23,6 +23,8 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 #include "OSCompatabilityLayer.h"
 #include <algorithm>
 #include <sys/stat.h>
+#include <boost/filesystem.hpp>
+
 #include "Log.h"
 #include "Configuration.h"
 #include "Parsers/Object.h"
@@ -160,9 +162,8 @@ adjacencyMapping initAdjacencyMap()
 {
 	FILE* adjacenciesBin = NULL;	// the adjacencies.bin file
 	string filename = Configuration::getV2DocumentsPath() + "\\map\\cache\\adjacencies.bin";	// the path and filename for adjacencies.bin
-	_stat st;	// the data structure telling us if the file exists
-	int statRet = GetStat(filename.c_str(), &st);
-	if (statRet != 0)
+        boost::filesystem::file_status st = boost::filesystem::status(filename);
+	if (boost::filesystem::exists(st))
 	{
 		LOG(LogLevel::Warning) << "Could not find " << filename << " - looking in install folder";
 		filename = Configuration::getV2Path() + "\\map\\cache\\adjacencies.bin";
