@@ -1,3 +1,5 @@
+#include <stdarg.h>
+
 #include "OSCompatabilityLayer.h"
 
 //Linux specific defines
@@ -5,7 +7,7 @@
 void sprintf_s_Linux (char *__restrict __s, size_t __maxlen, const char *__restrict __format, ...)
 {
   va_list argptr;
-  va_start(argptr, format);
+  va_start(argptr, __format);
   snprintf(__s, __maxlen, __format, argptr);
   va_end(argptr);
 }
