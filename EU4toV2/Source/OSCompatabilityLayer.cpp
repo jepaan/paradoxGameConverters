@@ -24,6 +24,14 @@ int fopen_s_Linux(FILE** file, const char* filename, const char* mode)
   return *file != NULL;
 }
 
+void fprintf_s_Linux(FILE* file, const char* format, ...)
+{
+  va_list argptr;
+  va_start(argptr, format);
+  fprintf(file, format, argptr);
+  va_end(argptr);
+}
+
 HANDLE GetStdHandle(int nothing)
 {
   return 1;
