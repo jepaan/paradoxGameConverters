@@ -761,37 +761,6 @@ int ConvertEU4ToV2(const std::string& EU4SaveFileName)
 	countryMap.readEU4Regions(colonialRegionsObj);
 	for (vector<string>::iterator itr = fullModPaths.begin(); itr != fullModPaths.end(); itr++)
 	{
-		struct _finddata_t	fileData;				// the file data info
-		intptr_t					fileListing = NULL;	// the file listing info
-		if ((fileListing = _findfirst(string(*itr + "/common/colonial_regions/*").c_str(), &fileData)) != -1L)
-		{
-			do
-			{
-				if (strcmp(fileData.name, ".") == 0 || strcmp(fileData.name, "..") == 0)
-				{
-					continue;
-				}
-				else if (fileData.attrib & _A_SUBDIR)
-				{
-					continue;
-				}
-				else
-				{
-					string modRegionsFile(*itr + "/common/colonial_regions/" + fileData.name);	// the path and name of the colonial regions file in this mod
-					if(boost::filesystem::exists(modRegionsFile) && boost::filesystem::is_regular_file(modRegionsFile))
-					{
-						colonialRegionsObj = doParseFile(modRegionsFile.c_str());
-						if (colonialRegionsObj == NULL)
-						{
-							LOG(LogLevel::Error) << "Could not parse file " << modRegionsFile;
-							exit(-1);
-						}
-						countryMap.readEU4Regions(colonialRegionsObj);
-					}
-				}
-			} while (_findnext(fileListing, &fileData) == 0);
-			_findclose(fileListing);
-		}
 		if(boost::filesystem::exists(string(*itr + "/common/colonial_regions/")) && boost::filesystem::is_directory(string(*itr + "/common/colonial_regions/")))
                 {
                         for(boost::filesystem::directory_entry& file : boost::filesystem::directory_iterator(string(*itr + "/common/colonial_regions/")))
