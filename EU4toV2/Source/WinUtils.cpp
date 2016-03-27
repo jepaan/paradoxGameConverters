@@ -21,7 +21,9 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 
 
 
-#include "WinUtils.h"
+#include "OSCompatabilityLayer.h"
+
+#include <iostream>
 
 #include <Windows.h>
 
@@ -182,6 +184,16 @@ int DeleteFolder(const std::string &refcstrRootDirectory,
 	}
 
 	return 0;
+}
+
+int FromMultiByte(char* in, int inSize, wchar_t* out, int outSize)
+{
+  return MultiByteToWideChar(CP_UTF8, 0, in, inSize, out, outSize);
+}
+
+int ToMultiByte(wchar_t* in, int inSize, char* out, int outSize)
+{
+  return WideCharToMultiByte(1252, WC_NO_BEST_FIT_CHARS | WC_COMPOSITECHECK | WC_DEFAULTCHAR, in, inSize, out, outSize, "0", NULL);
 }
 
 void WriteToConsole(int level, const std::string& logMessage)

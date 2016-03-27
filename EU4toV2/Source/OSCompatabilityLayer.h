@@ -7,7 +7,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
-#include <sys/stat.h>
+#include <set>
+#include <string>
 #include "Log.h"
 
 #ifndef MAX_PATH
@@ -54,12 +55,35 @@ typedef void (*WriteToConsoleUtilFunc)(LogLevel level, const std::string& logMes
 
 void InitOSCompatabilityLayer();
 
+namespace Utils {
+
+// Creates a new folder corresponding to the given path.
+// Returns true on success or if the folder already exists.
+// Returns false and logs a warning on failure.
 bool TryCreateFolder(const std::string& path);
 void GetCurrentDirectory(uint32_t length, char directory[MAX_PATH]);
+// Adds all files (just the file name) in the specified folder to the given collection.
+void GetAllFilesInFolder(const std::string& path, std::set<std::string>& fileNames);
+// Copies the file specified by sourcePath as destPath.
+// Returns true on success.
+// Returns false and logs a warning on failure.
 bool TryCopyFile(const std::string& sourcePath, const std::string& destPath);
+// Returns true if the specified file exists (and is a file rather than a folder).
+bool DoesFileExist(const std::string& path);
+// Returns true if the specified folder exists (and is a folder rather than a file).
+bool doesFolderExist(const std::string& path);
 
-void WriteToConsoleUtil(LogLevel level, const std::string& logMessage);
-//int GetStat(const char* path, _stat* stat);
+int FromMultiByte(const char* in, size_t inSize, wchar_t* out, size_t outSize);
+int ToMultiByte(const wchar_t* in, size_t inSize, char* out, size_t outSize);
 
+void WriteToConsole(LogLevel level, const std::string& logMessage);
+
+// Returns a formatted string describing the last error on the WinAPI.
+std::string GetLastError();
+
+// Recursively deletes a folder
+int DeleteFolder(const std::string &refcstrRootDirectory, bool bDeleteSubdirectories = true);
+
+} // namespace Utils
 
 #endif //OS_COMPATABILITY_LAYER_H

@@ -44,6 +44,9 @@ bool DoesFileExist(const std::string& path);
 // Returns true if the specified folder exists (and is a folder rather than a file).
 bool doesFolderExist(const std::string& path);
 
+int FromMultiByte(const char* in, int inSize, wchar_t* out, int outSize);
+int ToMultiByte(const wchar_t* in, int inSize, char* out, int outSize);
+
 // Returns a formatted string describing the last error on the WinAPI.
 std::string GetLastWindowsError();
 
