@@ -5,6 +5,9 @@ ADD_DEFINITIONS(
     -std=c++11
 )
 
+FIND_PACKAGE( Boost 1.60 COMPONENTS system filesystem REQUIRED )
+INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
+
 set(source 
   Source/Color.cpp
   Source/Configuration.cpp
@@ -17,7 +20,7 @@ set(source
   Source/targa.cpp
   Source/tempFuncs.cpp
   #Source/WinUtils.cpp
-  Source/OSCompatabilityLayer.cpp
+  Source/LinuxUtils.cpp
   Source/EU4World/EU4Army.cpp
   Source/EU4World/EU4Country.cpp
   Source/EU4World/EU4Diplomacy.cpp
@@ -49,6 +52,8 @@ set(source
   Source/Parsers/Parser.cpp)
 
 add_executable(eu4tov2 ${source})
+
+TARGET_LINK_LIBRARIES( eu4tov2 ${Boost_LIBRARIES} )
 
 install(TARGETS eu4tov2 RUNTIME DESTINATION bin)
 
