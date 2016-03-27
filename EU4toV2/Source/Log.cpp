@@ -49,7 +49,7 @@ Log::~Log()
 
 void Log::WriteToConsole(LogLevel level, const std::string& logMessage)
 {
-	WriteToConsoleUtil(level, logMessage);
+	Utils::WriteToConsole(level, logMessage);
 }
 
 void Log::WriteToFile(LogLevel level, const std::string& logMessage)

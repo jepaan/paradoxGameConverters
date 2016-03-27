@@ -146,7 +146,7 @@ void CountryMapping::CreateMapping(const EU4World& srcWorld, const V2World& dest
 	std::set<std::string> availableFlagFiles;
 	for (size_t i = 0; i < availableFlagFolders.size(); ++i)
 	{
-		WinUtils::GetAllFilesInFolder(availableFlagFolders[i], availableFlagFiles);
+		Utils::GetAllFilesInFolder(availableFlagFolders[i], availableFlagFiles);
 	}
 
 	for (auto & file : availableFlagFiles)

@@ -50,7 +50,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 int ConvertEU4ToV2(const std::string& EU4SaveFileName)
 {
 	char curDir[MAX_PATH];
-	GetCurrentDirectory(MAX_PATH, curDir);
+	Utils::GetCurrentDirectory(MAX_PATH, curDir);
 	LOG(LogLevel::Debug) << "Current directory is " << curDir;
 
 	Configuration::getInstance();
@@ -129,7 +129,7 @@ int ConvertEU4ToV2(const std::string& EU4SaveFileName)
 	{
 		LOG(LogLevel::Debug) << "EU4 Documents directory is " << EU4DocumentsLoc;
 		set<string> fileNames;
-		WinUtils::GetAllFilesInFolder(EU4DocumentsLoc + "/mod", fileNames);
+		Utils::GetAllFilesInFolder(EU4DocumentsLoc + "/mod", fileNames);
 		for (set<string>::iterator itr = fileNames.begin(); itr != fileNames.end(); itr++)
 		{
 			const int pos = itr->find_last_of('.');	// the position of the last period in the filename
@@ -183,7 +183,7 @@ int ConvertEU4ToV2(const std::string& EU4SaveFileName)
 	{
 		LOG(LogLevel::Debug) << "CK2 export directory is " << CK2ExportLoc;
 		set<string> fileNames;
-		WinUtils::GetAllFilesInFolder(CK2ExportLoc, fileNames);
+		Utils::GetAllFilesInFolder(CK2ExportLoc, fileNames);
 		for (set<string>::iterator itr = fileNames.begin(); itr != fileNames.end(); itr++)
 		{
 			const int pos = itr->find_last_of('.');	// the last period in the filename
@@ -241,7 +241,7 @@ int ConvertEU4ToV2(const std::string& EU4SaveFileName)
 	LOG(LogLevel::Info) << "Using output name " << outputName;
 
 	string outputFolder = string(curDir) + "/output/" + Configuration::getOutputName();
-	if (WinUtils::doesFolderExist(outputFolder.c_str()))
+	if (Utils::doesFolderExist(outputFolder.c_str()))
 	{
 		LOG(LogLevel::Error) << "Output folder " << Configuration::getOutputName() << " already exists! Clear the output folder before running again!";
 		exit(0);
@@ -427,7 +427,7 @@ int ConvertEU4ToV2(const std::string& EU4SaveFileName)
 		for (vector<string>::iterator itr = fullModPaths.begin(); itr != fullModPaths.end(); itr++)
 		{
 			set<string> fileNames;
-			WinUtils::GetAllFilesInFolder(*itr + "/common/country_tags/", fileNames);
+			Utils::GetAllFilesInFolder(*itr + "/common/country_tags/", fileNames);
 			for (set<string>::iterator fileItr = fileNames.begin(); fileItr != fileNames.end(); fileItr++)
 			{
 				ifstream convertedCommonCountries(*itr + "/common/country_tags/" + *fileItr);	// a stream of the data in the converted countries file

@@ -178,7 +178,7 @@ void V2Province::output() const
 	FILE* output;
 	if (fopen_s(&output, ("Output\\" + Configuration::getOutputName() + "\\history\\provinces\\" + filename).c_str(), "w") != 0)
 	{
-		LOG(LogLevel::Error) << "Could not create province history file Output\\" << Configuration::getOutputName() << "\\history\\provinces\\" << filename << " - " << WinUtils::GetLastWindowsError();
+		LOG(LogLevel::Error) << "Could not create province history file Output\\" << Configuration::getOutputName() << "\\history\\provinces\\" << filename << " - " << Utils::GetLastError();
 		exit(-1);
 	}
 	if (owner != "")

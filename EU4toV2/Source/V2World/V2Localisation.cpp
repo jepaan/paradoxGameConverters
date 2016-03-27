@@ -19,11 +19,12 @@ CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 
+#include "../OSCompatabilityLayer.h"
+
 #include <algorithm>
 
 #include "../EU4World/EU4Country.h"
 #include "../Log.h"
-#include "../WinUtils.h"
 
 #include "V2Localisation.h"
 
@@ -109,30 +110,30 @@ std::string V2Localisation::Convert(const std::string& text)
 		return "";
 	}
 
-	int utf16Size = WinUtils::FromMultiByte(text.c_str(), text.size(), NULL, 0);
+	int utf16Size = Utils::FromMultiByte(text.c_str(), text.size(), NULL, 0);
 	if (utf16Size == 0)
 	{
-		LOG(LogLevel::Warning) << "Can't convert \"" << text << "\" to UTF-16: " << WinUtils::GetLastWindowsError();
+		LOG(LogLevel::Warning) << "Can't convert \"" << text << "\" to UTF-16: " << Utils::GetLastError();
 		return "";
 	}
 	std::vector<wchar_t> utf16Text(utf16Size, L'\0');
-	int result = WinUtils::FromMultiByte(text.c_str(), text.size(), &utf16Text[0], utf16Size);
+	int result = Utils::FromMultiByte(text.c_str(), text.size(), &utf16Text[0], utf16Size);
 	if (result == 0)
 	{
-		LOG(LogLevel::Warning) << "Can't convert \"" << text << "\" to UTF-16: " << WinUtils::GetLastWindowsError();
+		LOG(LogLevel::Warning) << "Can't convert \"" << text << "\" to UTF-16: " << Utils::GetLastError();
 		return "";
 	}
-	int latin1Size = WinUtils::ToMultiByte(&utf16Text[0], utf16Size, NULL, 0);
+	int latin1Size = Utils::ToMultiByte(&utf16Text[0], utf16Size, NULL, 0);
 	if (latin1Size == 0)
 	{
-		LOG(LogLevel::Warning) << "Can't convert \"" << text << "\" to Latin-1: " << WinUtils::GetLastWindowsError();
+		LOG(LogLevel::Warning) << "Can't convert \"" << text << "\" to Latin-1: " << Utils::GetLastError();
 		return "";
 	}
 	std::vector<char> latin1Text(latin1Size, '\0');
-	result = WinUtils::ToMultiByte(&utf16Text[0], utf16Size, &latin1Text[0], latin1Size);
+	result = Utils::ToMultiByte(&utf16Text[0], utf16Size, &latin1Text[0], latin1Size);
 	if (result == 0)
 	{
-		LOG(LogLevel::Warning) << "Can't convert \"" << text << "\" to Latin-1: " << WinUtils::GetLastWindowsError();
+		LOG(LogLevel::Warning) << "Can't convert \"" << text << "\" to Latin-1: " << Utils::GetLastError();
 		return "";
 	}
 	return std::string(latin1Text.begin(), latin1Text.end());

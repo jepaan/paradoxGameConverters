@@ -129,7 +129,7 @@ V2World::V2World(const minorityPopMapping& minorities)
 
 	totalWorldPopulation	= 0;
 	std::set<std::string> fileNames;
-	WinUtils::GetAllFilesInFolder("./blankMod/output/history/pops/1836.1.1/", fileNames);
+	Utils::GetAllFilesInFolder("./blankMod/output/history/pops/1836.1.1/", fileNames);
 	for (std::set<std::string>::iterator itr = fileNames.begin(); itr != fileNames.end(); itr++)
 	{
 		list<int>* popProvinces = new list<int>;
@@ -362,7 +362,7 @@ void V2World::output() const
 {
 	// Create common\countries path.
 	std::string countriesPath = "Output/" + Configuration::getOutputName() + "/common/countries";
-	if (!WinUtils::TryCreateFolder(countriesPath))
+	if (!Utils::TryCreateFolder(countriesPath))
 	{
 		return;
 	}
@@ -404,7 +404,7 @@ void V2World::output() const
 	// Create localisations for all new countries. We don't actually know the names yet so we just use the tags as the names.
 	LOG(LogLevel::Debug) << "Writing localisation text";
 	std::string localisationPath = "Output/" + Configuration::getOutputName() + "/localisation";
-	if (!WinUtils::TryCreateFolder(localisationPath))
+	if (!Utils::TryCreateFolder(localisationPath))
 	{
 		return;
 	}
