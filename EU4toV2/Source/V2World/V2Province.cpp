@@ -36,6 +36,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 #include "V2Pop.h"
 #include "V2Country.h"
 #include "V2Factory.h"
+#include "../WinUtils.h"
 
 #include "V2Province.h"
 
@@ -177,11 +178,7 @@ void V2Province::output() const
 	FILE* output;
 	if (fopen_s(&output, ("Output\\" + Configuration::getOutputName() + "\\history\\provinces\\" + filename).c_str(), "w") != 0)
 	{
-		int errNum;
-		_get_errno(&errNum);
-		char errStr[256];
-		strerror_s(errStr, sizeof(errStr), errNum);
-		LOG(LogLevel::Error) << "Could not create province history file Output\\" << Configuration::getOutputName() << "\\history\\provinces\\" << filename << " - " << errStr;
+		LOG(LogLevel::Error) << "Could not create province history file Output\\" << Configuration::getOutputName() << "\\history\\provinces\\" << filename << " - " << WinUtils::GetLastWindowsError();
 		exit(-1);
 	}
 	if (owner != "")
