@@ -575,7 +575,7 @@ int ConvertEU4ToV2(const std::string& EU4SaveFileName)
         std::string regionPath = "./blankMod/output/map/region.txt";
 	if (boost::filesystem::exists(regionPath) && boost::filesystem::is_regular_file(regionPath))
 	{
-		Vic2RegionsObj = doParseFile(regionPath);
+		Vic2RegionsObj = doParseFile(regionPath.c_str());
 		if (Vic2RegionsObj == NULL)
 		{
 			LOG(LogLevel::Error) << "Could not parse file ." << regionPath;
