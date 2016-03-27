@@ -19,15 +19,13 @@ CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 
+#include <algorithm>
 
+#include "../EU4World/EU4Country.h"
+#include "../Log.h"
+#include "../WinUtils.h"
 
 #include "V2Localisation.h"
-
-#include <Windows.h>
-
-#include "..\EU4World\EU4Country.h"
-#include "..\Log.h"
-#include "..\WinUtils.h"
 
 const std::array<std::string, V2Localisation::numLanguages> V2Localisation::languages = 
 	{ "english", "french", "german", "spanish" };
@@ -111,27 +109,27 @@ std::string V2Localisation::Convert(const std::string& text)
 		return "";
 	}
 
-	int utf16Size = MultiByteToWideChar(CP_UTF8, 0, text.c_str(), text.size(), NULL, 0);
+	int utf16Size = WinUtils::FromMultiByte(text.c_str(), text.size(), NULL, 0);
 	if (utf16Size == 0)
 	{
 		LOG(LogLevel::Warning) << "Can't convert \"" << text << "\" to UTF-16: " << WinUtils::GetLastWindowsError();
 		return "";
 	}
 	std::vector<wchar_t> utf16Text(utf16Size, L'\0');
-	int result = MultiByteToWideChar(CP_UTF8, 0, text.c_str(), text.size(), &utf16Text[0], utf16Size);
+	int result = WinUtils::FromMultiByte(text.c_str(), text.size(), &utf16Text[0], utf16Size);
 	if (result == 0)
 	{
 		LOG(LogLevel::Warning) << "Can't convert \"" << text << "\" to UTF-16: " << WinUtils::GetLastWindowsError();
 		return "";
 	}
-	int latin1Size = WideCharToMultiByte(1252, WC_NO_BEST_FIT_CHARS | WC_COMPOSITECHECK | WC_DEFAULTCHAR, &utf16Text[0], utf16Size, NULL, 0, "0", NULL);
+	int latin1Size = WinUtils::ToMultiByte(&utf16Text[0], utf16Size, NULL, 0);
 	if (latin1Size == 0)
 	{
 		LOG(LogLevel::Warning) << "Can't convert \"" << text << "\" to Latin-1: " << WinUtils::GetLastWindowsError();
 		return "";
 	}
 	std::vector<char> latin1Text(latin1Size, '\0');
-	result = WideCharToMultiByte(1252, WC_NO_BEST_FIT_CHARS | WC_COMPOSITECHECK | WC_DEFAULTCHAR, &utf16Text[0], utf16Size, &latin1Text[0], latin1Size, "0", NULL);
+	result = WinUtils::ToMultiByte(&utf16Text[0], utf16Size, &latin1Text[0], latin1Size);
 	if (result == 0)
 	{
 		LOG(LogLevel::Warning) << "Can't convert \"" << text << "\" to Latin-1: " << WinUtils::GetLastWindowsError();
@@ -167,13 +165,13 @@ std::string V2Localisation::GetLocalAdjective()
 
 std::string V2Localisation::StripAccents(const std::string& text)
 {
-	std::string accents = "àáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ";
-	std::string without = "aaaaaaaceeeeiiiidnooooo ouuuuy y";
+	//std::string accents = "Ã Ã¡Ã¢Ã£Ã¤Ã¥Ã¦Ã§Ã¨Ã©ÃªÃ«Ã¬Ã­Ã®Ã¯Ã°Ã±Ã²Ã³Ã´ÃµÃ¶Ã·Ã¸Ã¹ÃºÃ»Ã¼Ã½Ã¾Ã¿";
+	//std::string without = "aaaaaaaceeeeiiiidnooooo ouuuuy y";
 	std::string out(text);
 
-	for (unsigned int i = 0; i < accents.size(); i++)
-	{
-		std::replace(out.begin(), out.end(), accents[i], without[i]);
-	}
+	//for (unsigned int i = 0; i < accents.size(); i++)
+	//{
+	//	std::replace(out.begin(), out.end(), accents[i], without[i]);
+	//}
 	return out;
 }
