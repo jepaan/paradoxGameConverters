@@ -80,9 +80,9 @@ int ConvertEU4ToV2(const std::string& EU4SaveFileName)
 	// Get V2 install location
 	LOG(LogLevel::Info) << "Get V2 Install Path";
 	string V2Loc = Configuration::getV2Path();	// the V2 install location as stated in the configuration file
-	if (!boost::filesystem::exists(V2Loc) || boost::filesystem::is_directory(V2Loc)) 
+	if (!boost::filesystem::exists(V2Loc) || !boost::filesystem::is_directory(V2Loc)) 
 	{
-		LOG(LogLevel::Error) << "No Victoria 2 path was specified in configuration.txt, or the path was invalid";
+		LOG(LogLevel::Error) << "No Victoria 2 path was specified in configuration.txt, or the path was invalid ";
 		return (-1);
 	}
 	else
@@ -93,7 +93,7 @@ int ConvertEU4ToV2(const std::string& EU4SaveFileName)
 	// Get V2 Documents Directory
 	LOG(LogLevel::Debug) << "Get V2 Documents directory";
 	string V2DocLoc = Configuration::getV2DocumentsPath();	// the V2 My Documents location as stated in the configuration file
-	if (!boost::filesystem::exists(V2DocLoc) || boost::filesystem::is_directory(V2DocLoc)) 
+	if (!boost::filesystem::exists(V2DocLoc) || !boost::filesystem::is_directory(V2DocLoc)) 
 	{
 		LOG(LogLevel::Error) << "No Victoria 2 documents directory was specified in configuration.txt, or the path was invalid";
 		return (-1);
@@ -106,7 +106,7 @@ int ConvertEU4ToV2(const std::string& EU4SaveFileName)
 	// Get EU4 install location
 	LOG(LogLevel::Debug) << "Get EU4 Install Path";
 	string EU4Loc = Configuration::getEU4Path();	// the EU4 install location as stated in the configuration file
-	if (!boost::filesystem::exists(EU4Loc) || boost::filesystem::is_directory(EU4Loc)) 
+	if (!boost::filesystem::exists(EU4Loc) || !boost::filesystem::is_directory(EU4Loc)) 
 	{
 		LOG(LogLevel::Error) << "No Europa Universalis 4 path was specified in configuration.txt, or the path was invalid";
 		return (-1);
@@ -120,7 +120,7 @@ int ConvertEU4ToV2(const std::string& EU4SaveFileName)
 	map<string, string> possibleMods; // name, path
 	LOG(LogLevel::Debug) << "Get EU4 Mod Directory";
 	string EU4DocumentsLoc = Configuration::getEU4DocumentsPath();	// the EU4 My Documents location as stated in the configuration file
-	if (!boost::filesystem::exists(EU4DocumentsLoc) || boost::filesystem::is_directory(EU4DocumentsLoc))
+	if (!boost::filesystem::exists(EU4DocumentsLoc) || !boost::filesystem::is_directory(EU4DocumentsLoc))
 	{
 		LOG(LogLevel::Error) << "No Europa Universalis 4 documents directory was specified in configuration.txt, or the path was invalid";
 		return (-1);
@@ -175,7 +175,7 @@ int ConvertEU4ToV2(const std::string& EU4SaveFileName)
 	// Get CK2 Export directory
 	LOG(LogLevel::Debug) << "Get CK2 Export Directory";
 	string CK2ExportLoc = Configuration::getCK2ExportPath();		// the CK2 converted mods location as stated in the configuration file
-	if (!boost::filesystem::exists(CK2ExportLoc) || boost::filesystem::is_directory(CK2ExportLoc))
+	if (!boost::filesystem::exists(CK2ExportLoc) || !boost::filesystem::is_directory(CK2ExportLoc))
 	{
 		LOG(LogLevel::Warning) << "No Crusader Kings 2 mod directory was specified in configuration.txt, or the path was invalid - this will cause problems with CK2 converted saves";
 	}
