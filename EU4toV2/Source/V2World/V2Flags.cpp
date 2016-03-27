@@ -381,7 +381,7 @@ bool V2Flags::Output() const
 			std::string sourceFlagPath = folderPath + "\\CustomBases\\" + baseFlag + ".tga";
 			std::string sourceEmblemPath = folderPath + "\\CustomEmblems\\" + emblem + suffix;
 			
-			flagFileFound = (Utils::DoesFileExist(sourceFlagPath) && WinUtils::DoesFileExist(sourceEmblemPath));
+			flagFileFound = (Utils::DoesFileExist(sourceFlagPath) && Utils::DoesFileExist(sourceEmblemPath));
 			if (flagFileFound)
 			{
 				std::string destFlagPath = outputFlagFolder + '\\' + V2Tag + suffix;
