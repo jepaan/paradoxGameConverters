@@ -20,20 +20,21 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 
 
+#include "../OSCompatabilityLayer.h"
 
-#include "V2World.h"
-#include <Windows.h>
 #include <string>
 #include <iostream>
 #include <fstream>
 #include <algorithm>
 #include <regex>
-#include <io.h>
 #include <list>
 #include <queue>
 #include <cmath>
 #include <cfloat>
 #include <sys/stat.h>
+
+#include <boost/filesystem.hpp>
+
 #include "../Parsers/Parser.h"
 #include "../Log.h"
 #include "../Mapper.h"
@@ -55,6 +56,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 #include "V2Flags.h"
 #include "V2LeaderTraits.h"
 
+#include "V2World.h"
 
 
 typedef struct fileWithCreateTime
@@ -73,83 +75,52 @@ V2World::V2World(const minorityPopMapping& minorities)
 {
 	LOG(LogLevel::Info) << "Importing provinces";
 
-	struct _finddata_t	provinceFileData;
-	intptr_t					fileListing	= NULL;
 	list<string>			directories;
 	directories.push_back("");
-
-	struct _stat st;
-	if (_stat(".\\blankMod\\output\\history\\provinces\\", &st) == 0)
-	{
-		while (directories.size() > 0)
-		{
-			if ((fileListing = _findfirst((string(".\\blankMod\\output\\history\\provinces") + directories.front() + "\\*.*").c_str(), &provinceFileData)) == -1L)
-			{
-				LOG(LogLevel::Error) << "Could not open directory .\\blankMod\\output\\history\\provinces" << directories.front() << "\\*.*";
-				exit(-1);
-			}
-
-			do
-			{
-				if (strcmp(provinceFileData.name, ".") == 0 || strcmp(provinceFileData.name, "..") == 0)
-				{
-					continue;
-				}
-				if (provinceFileData.attrib & _A_SUBDIR)
-				{
-					string newDirectory = directories.front() + "\\" + provinceFileData.name;
-					directories.push_back(newDirectory);
-				}
-				else
-				{
-					V2Province* newProvince = new V2Province(directories.front() + "\\" + provinceFileData.name);
-					provinces.insert(make_pair(newProvince->getNum(), newProvince));
-				}
-			} while (_findnext(fileListing, &provinceFileData) == 0);
-			_findclose(fileListing);
-			directories.pop_front();
-		}
-	}
+        
+	if(boost::filesystem::exists("./blankMod/output/history/provinces/") && boost::filesystem::is_directory("./blankMod/output/history/provinces/"))
+        {
+          while (directories.size() > 0)
+          {
+            if(!boost::filesystem::exists(string("./blankMod/output/history/provinces") + directories.front() + "/*.*") || !boost::filesystem::is_directory(string("./blankMod/output/history/provinces") + directories.front() + "/*.*"))
+            {
+              LOG(LogLevel::Error) << "./blankMod/output/history/provinces" << directories.front() << "/*.*";
+              exit(-1);
+            }
+            for(boost::filesystem::directory_entry& file : boost::filesystem::directory_iterator(string("./blankMod/output/history/provinces") + directories.front() + "/*.*"))
+            {
+              V2Province* newProvince = new V2Province(directories.front() + "/" + file.path().native());
+              provinces.insert(make_pair(newProvince->getNum(), newProvince));
+            }
+            directories.pop_front();
+          }  
+        }
 	else
 	{
-		while (directories.size() > 0)
-		{
-			if ((fileListing = _findfirst((Configuration::getV2Path() + "\\history\\provinces" + directories.front() + "\\*.*").c_str(), &provinceFileData)) == -1L)
-			{
-				LOG(LogLevel::Error) << "Could not open directory " << Configuration::getV2Path() << "\\history\\provinces" << directories.front() << "\\*.*";
-				exit(-1);
-			}
-
-			do
-			{
-				if (strcmp(provinceFileData.name, ".") == 0 || strcmp(provinceFileData.name, "..") == 0)
-				{
-					continue;
-				}
-				if (provinceFileData.attrib & _A_SUBDIR)
-				{
-					string newDirectory = directories.front() + "\\" + provinceFileData.name;
-					directories.push_back(newDirectory);
-				}
-				else
-				{
-					V2Province* newProvince = new V2Province(directories.front() + "\\" + provinceFileData.name);
-					provinces.insert(make_pair(newProvince->getNum(), newProvince));
-				}
-			} while (_findnext(fileListing, &provinceFileData) == 0);
-			_findclose(fileListing);
-			directories.pop_front();
-		}
+          while (directories.size() > 0)
+          {
+            if(!boost::filesystem::exists(Configuration::getV2Path() + "/history/provinces" + directories.front() + "/*.*") || !boost::filesystem::is_directory(Configuration::getV2Path() + "/history/provinces" + directories.front() + "/*.*"))
+            {
+              LOG(LogLevel::Error) << "./blankMod/output/history/provinces" << directories.front() << "/*.*";
+              exit(-1);
+            }
+            for(boost::filesystem::directory_entry& file : boost::filesystem::directory_iterator(string("./blankMod/output/history/provinces") + directories.front() + "/*.*"))
+            {
+              V2Province* newProvince = new V2Province(directories.front() + "/" + file.path().native());
+              provinces.insert(make_pair(newProvince->getNum(), newProvince));
+            }
+            directories.pop_front();
+          }
 	}
 
 	// Get province names
-	if (_stat(".\\blankMod\\output\\localisation\\text.csv", &st) == 0)
+	if (boost::filesystem::exists("./blankMod/output/localisation/text.csv"))
 	{
-		getProvinceLocalizations(".\\blankMod\\output\\localisation\\text.csv");
+		getProvinceLocalizations("./blankMod/output/localisation/text.csv");
 	}
 	else
 	{
-		getProvinceLocalizations((Configuration::getV2Path() + "\\localisation\\text.csv"));
+		getProvinceLocalizations((Configuration::getV2Path() + "/localisation/text.csv"));
 	}
 	
 	// set V2 basic population levels
@@ -158,11 +129,11 @@ V2World::V2World(const minorityPopMapping& minorities)
 
 	totalWorldPopulation	= 0;
 	set<string> fileNames;
-	WinUtils::GetAllFilesInFolder(".\\blankMod\\output\\history\\pops\\1836.1.1\\", fileNames);
+	WinUtils::GetAllFilesInFolder("./blankMod/output/history/pops/1836.1.1/", fileNames);
 	for (set<string>::iterator itr = fileNames.begin(); itr != fileNames.end(); itr++)
 	{
 		list<int>* popProvinces = new list<int>;
-		Object*	obj2	= doParseFile((".\\blankMod\\output\\history\\pops\\1836.1.1\\" + *itr).c_str());				// generic object
+		Object*	obj2	= doParseFile(("./blankMod/output/history/pops/1836.1.1/" + *itr).c_str());				// generic object
 		vector<Object*> leaves = obj2->getLeaves();
 		for (unsigned int j = 0; j < leaves.size(); j++)
 		{
@@ -261,16 +232,16 @@ V2World::V2World(const minorityPopMapping& minorities)
 	// determine whether a province is coastal or not by checking if it has a naval base
 	// if it's not coastal, we won't try to put any navies in it (otherwise Vicky crashes)
 	LOG(LogLevel::Info) << "Finding coastal provinces.";
-	Object*	obj2 = doParseFile((Configuration::getV2Path() + "\\map\\positions.txt").c_str());
+	Object*	obj2 = doParseFile((Configuration::getV2Path() + "/map/positions.txt").c_str());
 	if (obj2 == NULL)
 	{
-		LOG(LogLevel::Error) << "Could not parse file " << Configuration::getV2Path() << "\\map\\positions.txt";
+		LOG(LogLevel::Error) << "Could not parse file " << Configuration::getV2Path() << "/map/positions.txt";
 		exit(-1);
 	}
 	vector<Object*> objProv = obj2->getLeaves();
 	if (objProv.size() == 0)
 	{
-		LOG(LogLevel::Error) << "map\\positions.txt failed to parse.";
+		LOG(LogLevel::Error) << "map/positions.txt failed to parse.";
 		exit(1);
 	}
 	for (vector<Object*>::iterator itr = objProv.begin(); itr != objProv.end(); ++itr)
@@ -301,13 +272,13 @@ V2World::V2World(const minorityPopMapping& minorities)
 	dynamicCountries.clear();
 	const date FirstStartDate("1836.1.1");
 	ifstream V2CountriesInput;
-	if (_stat(".\\blankMod\\output\\common\\countries.txt", &st) == 0)
+	if (boost::filesystem::exists("./blankMod/output/common/countries.txt"))
 	{
-		V2CountriesInput.open(".\\blankMod\\output\\common\\countries.txt");
+		V2CountriesInput.open("./blankMod/output/common/countries.txt");
 	}
 	else
 	{
-		V2CountriesInput.open( (Configuration::getV2Path() + "\\common\\countries.txt").c_str() );
+		V2CountriesInput.open( (Configuration::getV2Path() + "/common/countries.txt").c_str() );
 	}
 	if (!V2CountriesInput.is_open())
 	{
@@ -340,25 +311,25 @@ V2World::V2World(const minorityPopMapping& minorities)
 		countryFileName	= line.substr(start, size);
 
 		Object* countryData;
-		if (_stat((string(".\\blankMod\\output\\common\\countries\\") + countryFileName).c_str(), &st) == 0)
+                if(boost::filesystem::exists(string("./blankMod/output/common/countries/") + countryFileName))
 		{
-			countryData = doParseFile((string(".\\blankMod\\output\\common\\countries\\") + countryFileName).c_str());
+			countryData = doParseFile((string("./blankMod/output/common/countries/") + countryFileName).c_str());
 			if (countryData == NULL)
 			{
-				LOG(LogLevel::Warning) << "Could not parse file .\\blankMod\\output\\common\\countries\\" << countryFileName;
+				LOG(LogLevel::Warning) << "Could not parse file ./blankMod/output/common/countries/" << countryFileName;
 			}
 		}
-		else if (_stat((Configuration::getV2Path() + "\\common\\countries\\" + countryFileName).c_str(), &st) == 0)
+		else if (boost::filesystem::exists(Configuration::getV2Path() + "/common/countries/" + countryFileName))
 		{
-			countryData = doParseFile((Configuration::getV2Path() + "\\common\\countries\\" + countryFileName).c_str());
+			countryData = doParseFile((Configuration::getV2Path() + "/common/countries/" + countryFileName).c_str());
 			if (countryData == NULL)
 			{
-				LOG(LogLevel::Warning) << "Could not parse file " << Configuration::getV2Path() << "\\common\\countries\\" << countryFileName;
+				LOG(LogLevel::Warning) << "Could not parse file " << Configuration::getV2Path() << "/common/countries/" << countryFileName;
 			}
 		}
 		else
 		{
-			LOG(LogLevel::Debug) << "Could not find file common\\countries\\" << countryFileName << " - skipping";
+			LOG(LogLevel::Debug) << "Could not find file common/countries/" << countryFileName << " - skipping";
 			continue;
 		}
 
@@ -390,7 +361,7 @@ V2World::V2World(const minorityPopMapping& minorities)
 void V2World::output() const
 {
 	// Create common\countries path.
-	string countriesPath = "Output\\" + Configuration::getOutputName() + "\\common\\countries";
+	string countriesPath = "Output/" + Configuration::getOutputName() + "/common/countries";
 	if (!WinUtils::TryCreateFolder(countriesPath))
 	{
 		return;
@@ -399,7 +370,7 @@ void V2World::output() const
 	// Output common\countries.txt
 	LOG(LogLevel::Debug) << "Writing countries file";
 	FILE* allCountriesFile;
-	if (fopen_s(&allCountriesFile, ("Output\\" + Configuration::getOutputName() + "\\common\\countries.txt").c_str(), "w") != 0)
+	if (fopen_s(&allCountriesFile, ("Output/" + Configuration::getOutputName() + "/common/countries.txt").c_str(), "w") != 0)
 	{
 		LOG(LogLevel::Error) << "Could not create countries file";
 		exit(-1);
@@ -432,13 +403,13 @@ void V2World::output() const
 
 	// Create localisations for all new countries. We don't actually know the names yet so we just use the tags as the names.
 	LOG(LogLevel::Debug) << "Writing localisation text";
-	string localisationPath = "Output\\" + Configuration::getOutputName() + "\\localisation";
+	string localisationPath = "Output/" + Configuration::getOutputName() + "/localisation";
 	if (!WinUtils::TryCreateFolder(localisationPath))
 	{
 		return;
 	}
-	string source = Configuration::getV2Path() + "\\localisation\\text.csv";
-	string dest = localisationPath + "\\text.csv";
+	string source = Configuration::getV2Path() + "/localisation/text.csv";
+	string dest = localisationPath + "/text.csv";
 
 	if (isRandomWorld)
 	{
@@ -465,7 +436,7 @@ void V2World::output() const
 
 		// ...and also empty out 0_Names.csv
 		FILE* zeronamesfile;
-		string zeronamesfilepath = localisationPath + "\\0_Names.csv";
+		string zeronamesfilepath = localisationPath + "/0_Names.csv";
 		if (fopen_s(&zeronamesfile, zeronamesfilepath.c_str(), "w") != 0)
 			fclose(zeronamesfile);
 
@@ -476,7 +447,7 @@ void V2World::output() const
 	}
 
 	FILE* localisationFile;
-	if (fopen_s(&localisationFile, (localisationPath + "\\0_Names.csv").c_str(), "a") != 0)
+	if (fopen_s(&localisationFile, (localisationPath + "/0_Names.csv").c_str(), "a") != 0)
 	{
 		LOG(LogLevel::Error) << "Could not update localisation text file";
 		exit(-1);
@@ -508,7 +479,7 @@ void V2World::output() const
 
 	// verify countries got written
 	ifstream V2CountriesInput;
-	V2CountriesInput.open(("Output\\" + Configuration::getOutputName() + "\\common\\countries.txt").c_str());
+	V2CountriesInput.open(("Output/" + Configuration::getOutputName() + "/common/countries.txt").c_str());
 	if (!V2CountriesInput.is_open())
 	{
 		LOG(LogLevel::Error) << "Could not open countries.txt";
@@ -535,16 +506,15 @@ void V2World::output() const
 		int size				= line.find_last_of('\"') - start - 1;
 		countryFileName	= line.substr(start + 1, size);
 
-		struct _stat st;
-		if (_stat(("Output\\" + Configuration::getOutputName() + "\\common\\countries\\" + countryFileName).c_str(), &st) == 0)
+		if (boost::filesystem::exists("Output/" + Configuration::getOutputName() + "/common/countries/" + countryFileName))
 		{
 		}
-		else if (_stat((Configuration::getV2Path() + "\\common\\countries\\" + countryFileName).c_str(), &st) == 0)
+		else if (boost::filesystem::exists(Configuration::getV2Path() + "/common/countries/" + countryFileName))
 		{
 		}
 		else
 		{
-			LOG(LogLevel::Warning) << "common\\countries\\" << countryFileName << " does not exists. This will likely crash Victoria 2.";
+			LOG(LogLevel::Warning) << "common/countries/" << countryFileName << " does not exists. This will likely crash Victoria 2.";
 			continue;
 		}
 	}
@@ -558,9 +528,9 @@ void V2World::outputPops() const
 	for (map<string, list<int>* >::const_iterator itr = popRegions.begin(); itr != popRegions.end(); itr++)
 	{
 		FILE* popsFile;
-		if (fopen_s(&popsFile, ("Output\\" + Configuration::getOutputName() + "\\history\\pops\\1836.1.1\\" + itr->first).c_str(), "w") != 0)
+		if (fopen_s(&popsFile, ("Output/" + Configuration::getOutputName() + "/history/pops/1836.1.1/" + itr->first).c_str(), "w") != 0)
 		{
-			LOG(LogLevel::Error) << "Could not create pops file Output\\" << Configuration::getOutputName() << "\\history\\pops\\1836.1.1\\" << itr->first;
+			LOG(LogLevel::Error) << "Could not create pops file Output/" << Configuration::getOutputName() << "/history/pops/1836.1.1/" << itr->first;
 			exit(-1);
 		}
 
