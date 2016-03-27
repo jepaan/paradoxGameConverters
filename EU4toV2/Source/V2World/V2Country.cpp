@@ -19,13 +19,11 @@ CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 
+#include "../OSCompatabilityLayer.h"
 
-
-#include "V2Country.h"
 #include <algorithm>
 #include <math.h>
 #include <float.h>
-#include <io.h>
 #include <fstream>
 #include <sstream>
 #include <queue>
@@ -47,6 +45,8 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 #include "V2Creditor.h"
 #include "V2Leader.h"
 #include "V2Pop.h"
+
+#include "V2Country.h"
 
 
 

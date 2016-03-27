@@ -63,4 +63,4 @@ class V2UncivReforms {
 };
 
 
-#endif V2REFORMS_H_
+#endif //V2REFORMS_H_
