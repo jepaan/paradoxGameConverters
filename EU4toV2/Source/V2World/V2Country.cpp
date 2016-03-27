@@ -27,7 +27,10 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 #include <fstream>
 #include <sstream>
 #include <queue>
+
 #include <boost/algorithm/string.hpp>
+#include <boost/filesystem.hpp>
+
 #include "../Log.h"
 #include "../Configuration.h"
 #include "../Parsers/Parser.h"
@@ -394,22 +397,25 @@ void V2Country::initFromEU4Country(EU4Country* _srcCountry, const CountryMapping
 		newCountry = true;
 	}
 
-	struct _finddata_t	fileData;
-	intptr_t					fileListing;
-	string filesearch = ".\\blankMod\\output\\history\\countries\\" + tag + "*.txt";
-	if ((fileListing = _findfirst(filesearch.c_str(), &fileData)) != -1L)
-	{
-		filename = fileData.name;
-	}
-	_findclose(fileListing);
+        if(boost::filesystem::exists("./blankMod/output/history/countries/" + tag + "*.txt") && boost::filesystem::is_directory("./blankMod/output/history/countries/" + tag + "*.txt"))
+        {
+          for(boost::filesystem::directory_entry& file : boost::filesystem::directory_iterator("./blankMod/output/history/countries/" + tag + "*.txt"))
+          {
+            filename = file.path().native();
+            break;
+          }
+        }
 	if (filename == "")
 	{
-		string filesearch = Configuration::getV2Path() + "\\history\\countries\\" + tag + "*.txt";
-		if ((fileListing = _findfirst(filesearch.c_str(), &fileData)) != -1L)
-		{
-			filename = fileData.name;
-		}
-		_findclose(fileListing);
+          string filesearch = Configuration::getV2Path() + "\\history\\countries\\" + tag + "*.txt";
+          if(boost::filesystem::exists(filesearch) && boost::filesystem::is_directory(filesearch))
+          {
+            for(boost::filesystem::directory_entry& file : boost::filesystem::directory_iterator(filesearch))
+            {
+              filename = file.path().native();
+              break;
+            }
+          }
 	}
 	if (filename == "")
 	{
@@ -781,25 +787,27 @@ void V2Country::initFromEU4Country(EU4Country* _srcCountry, const CountryMapping
 void V2Country::initFromHistory()
 {
 	string fullFilename;
-	struct _finddata_t	fileData;
-	intptr_t					fileListing;
 	string filesearch = ".\\blankMod\\output\\history\\countries\\" + tag + "*.txt";
-	if ((fileListing = _findfirst(filesearch.c_str(), &fileData)) != -1L)
-	{
-		filename			= fileData.name;
-		fullFilename	= string(".\\blankMod\\output\\history\\countries\\") + fileData.name;
-	}
-	_findclose(fileListing);
-	if (fullFilename == "")
-	{
-		string filesearch = Configuration::getV2Path() + "\\history\\countries\\" + tag + "*.txt";
-		if ((fileListing = _findfirst(filesearch.c_str(), &fileData)) != -1L)
-		{
-			filename			= fileData.name;
-			fullFilename	= Configuration::getV2Path() + "\\history\\countries\\" + fileData.name;
-		}
-		_findclose(fileListing);
-	}
+	if(boost::filesystem::exists(filesearch) && boost::filesystem::is_directory(filesearch))
+        {
+          for(boost::filesystem::directory_entry& file : boost::filesystem::directory_iterator(filesearch))
+          {
+            filename = file.path().native();
+            break;
+          }
+        }
+        if (filename == "")
+        {
+          string filesearch = Configuration::getV2Path() + "\\history\\countries\\" + tag + "*.txt";
+          if(boost::filesystem::exists(filesearch) && boost::filesystem::is_directory(filesearch))
+          {
+            for(boost::filesystem::directory_entry& file : boost::filesystem::directory_iterator(filesearch))
+            {
+              filename = file.path().native();
+              break;
+            }
+          }
+        }
 	if (fullFilename == "")
 	{
 		string countryName	= commonCountryFile;
