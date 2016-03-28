@@ -197,6 +197,14 @@ string bufferOneObject(ifstream& read)
 	while (read.good())
 	{
 		getline(read, buffer);
+                if(buffer.empty())
+                {
+                        continue;
+                }
+                if(buffer.back() == '\r')
+                {
+                        buffer.pop_back();
+                }
 		if (buffer == "CK2txt")
 		{
 			continue;
