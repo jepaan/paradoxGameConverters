@@ -41,10 +41,6 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 #include "V2World/V2TechSchools.h"
 #include "V2World/V2LeaderTraits.h"
 
-
-#include "WinUtils.h"
-
-
 // Converts the given EU4 save into a V2 mod.
 // Returns 0 on success or a non-zero failure code on error.
 int ConvertEU4ToV2(const std::string& EU4SaveFileName)

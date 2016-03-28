@@ -1,9 +1,6 @@
 #ifndef OS_COMPATABILITY_LAYER_H
 #define OS_COMPATABILITY_LAYER_H
 
-#define __STDC_LIB_EXT1__
-#define __STDC_WANT_LIB_EXT1__ 1
-
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>

@@ -32,7 +32,6 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 #include "V2Country.h"
 #include "../Configuration.h"
 #include "../Log.h"
-#include "../WinUtils.h"
 #include "../FlagUtils.h"
 
 #include "V2Flags.h"

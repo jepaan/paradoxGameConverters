@@ -41,7 +41,6 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 #include "V2World/V2Country.h"
 #include "V2World/V2Province.h"
 #include "Log.h"
-#include "WinUtils.h"
 
 #include "CountryMapping.h"
 

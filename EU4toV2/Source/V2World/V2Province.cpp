@@ -36,7 +36,6 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 #include "V2Pop.h"
 #include "V2Country.h"
 #include "V2Factory.h"
-#include "../WinUtils.h"
 
 #include "V2Province.h"
 

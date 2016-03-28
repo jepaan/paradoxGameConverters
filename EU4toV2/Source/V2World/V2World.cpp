@@ -39,7 +39,6 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 #include "../Log.h"
 #include "../Mapper.h"
 #include "../Configuration.h"
-#include "../WinUtils.h"
 #include "../EU4World/EU4World.h"
 #include "../EU4World/EU4Relations.h"
 #include "../EU4World/EU4Leader.h"
