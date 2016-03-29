@@ -398,7 +398,7 @@ int ConvertEU4ToV2(const std::string& EU4SaveFileName)
 		{
                         for(boost::filesystem::directory_entry& file : boost::filesystem::directory_iterator(string(*itr + "/common/cultures/")))
                         {
-                          string modCultureFile(*itr + "/common/cultures/" + file.path().string());    // the path and name of the culture file in this mod
+                          string modCultureFile(file.path().string());    // the path and name of the culture file in this mod
                           culturesObj = doParseFile(modCultureFile.c_str());
                           if (culturesObj == NULL)
                           {
@@ -426,7 +426,7 @@ int ConvertEU4ToV2(const std::string& EU4SaveFileName)
 			Utils::GetAllFilesInFolder(*itr + "/common/country_tags/", fileNames);
 			for (set<string>::iterator fileItr = fileNames.begin(); fileItr != fileNames.end(); fileItr++)
 			{
-				ifstream convertedCommonCountries(*itr + "/common/country_tags/" + *fileItr);	// a stream of the data in the converted countries file
+				ifstream convertedCommonCountries(*fileItr);	// a stream of the data in the converted countries file
 				sourceWorld.readCommonCountries(convertedCommonCountries, *itr);
 			}
 		}
@@ -463,8 +463,11 @@ int ConvertEU4ToV2(const std::string& EU4SaveFileName)
                         for(boost::filesystem::directory_entry& file : boost::filesystem::directory_iterator(string(EU4Loc + "/common/units/")))
                         {
                           string unitFilename = file.path().string();
-                          string unitName = unitFilename.substr(0, unitFilename.find_first_of('.'));
-                          AddUnitFileToRegimentTypeMap((EU4Loc + "/common/units"), unitName, rtm);
+						  int lastSlash		= unitFilename.find_last_of('/');
+						  int lastSlash2	= unitFilename.find_last_of('\\');
+						  lastSlash = (lastSlash > lastSlash2) ? lastSlash : lastSlash2;
+                          string unitName = unitFilename.substr(lastSlash + 1, unitFilename.find_first_of('.') - lastSlash - 1);
+                          AddUnitFileToRegimentTypeMap(unitFilename, unitName, rtm);
                         }
                 }
 	}

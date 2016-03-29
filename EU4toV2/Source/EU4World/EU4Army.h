@@ -112,7 +112,7 @@ class EU4Army // also Navy
 
 
 void AddCategoryToRegimentTypeMap(Object* obj, RegimentCategory category, string categoryName, RegimentTypeMap& rtm);
-void AddUnitFileToRegimentTypeMap(string directory, string name, RegimentTypeMap& rtm);
+void AddUnitFileToRegimentTypeMap(string filename, string name, RegimentTypeMap& rtm);
 
 
 
