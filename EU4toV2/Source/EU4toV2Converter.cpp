@@ -463,7 +463,7 @@ int ConvertEU4ToV2(const std::string& EU4SaveFileName)
                         {
                           string unitFilename = file.path().string();
                           string unitName = unitFilename.substr(0, unitFilename.find_first_of('.'));
-                          AddUnitFileToRegimentTypeMap((EU4Loc + "/common/units"), unitName, rtm);
+                          AddUnitFileToRegimentTypeMap(unitFilename, rtm);
                         }
                 }
 	}

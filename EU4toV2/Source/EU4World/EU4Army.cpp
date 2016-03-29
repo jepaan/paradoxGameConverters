@@ -217,12 +217,12 @@ void AddCategoryToRegimentTypeMap(Object* obj, RegimentCategory category, string
 }
 
 
-void AddUnitFileToRegimentTypeMap(string directory, string name, RegimentTypeMap& rtm)
+void AddUnitFileToRegimentTypeMap(string name, RegimentTypeMap& rtm)
 {
-	Object* obj = doParseFile((directory + "\\" + name + ".txt").c_str());	// the parsed regiment costs file
+	Object* obj = doParseFile(name.c_str());	// the parsed regiment costs file
 	if (obj == NULL)
 	{
-		LOG(LogLevel::Error) << "Could not parse file " << directory << '\\' << name << ".txt";
+		LOG(LogLevel::Error) << "Could not parse file " << name << ".txt";
 		exit(-1);
 	}
 
