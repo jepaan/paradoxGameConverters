@@ -23,7 +23,6 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 
 #include "OSCompatabilityLayer.h"
 #include <fstream>
-#include <io.h>
 #include <stdexcept>
 #include <string>
 #include <stdio.h>
@@ -712,13 +711,13 @@ int ConvertEU4ToV2(const std::string& EU4SaveFileName)
 
 	// Get CK2 title names
 	LOG(LogLevel::Info) << "Getting CK2 titles";
-	Object* CK2TitleObj = doParseFile("ck2titlemap.txt");
+	Object* CK2TitleObj = doParseFile("ck2titleMap.txt");
 	CK2TitleMapping ck2Titles = initCK2TitleMap(CK2TitleObj);
 
 	// Parse colony rules
 	LOG(LogLevel::Info) << "Parsing colony naming rules.";
 	initParser();
-	Object* colonialObj = doParseFile("colonial.txt");
+	Object* colonialObj = doParseFile("Colonial.txt");
 	if (colonialObj == NULL)
 	{
 		LOG(LogLevel::Error) << "Could not parse colonial.txt";

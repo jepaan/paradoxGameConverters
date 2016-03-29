@@ -144,6 +144,8 @@ public:
 	}
 
 private:
+        void trimPaths();
+        static void trimPath(std::string& path);
 	static Configuration* instance;
 
 	// options from configuration.txt

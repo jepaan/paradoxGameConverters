@@ -50,7 +50,7 @@ namespace Utils
       return boost::filesystem::create_directory(path, lastError);
   }
   
-  void GetCurrentDirectory(uint32_t length, char directory[MAX_PATH])
+  void getCurrentDirectory(uint32_t length, char directory[MAX_PATH])
   {
     boost::filesystem::current_path(directory, lastError);
   }

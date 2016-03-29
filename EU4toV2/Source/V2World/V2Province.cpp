@@ -97,7 +97,7 @@ V2Province::V2Province(std::string _filename)
 	}
 	else
 	{
-		obj = doParseFile((Configuration::getV2Path() + "\\history\\provinces" + _filename).c_str());
+		obj = doParseFile(_filename.c_str());
 		if (obj == NULL)
 		{
 			LOG(LogLevel::Error) << "Could not parse " << Configuration::getV2Path() << "\\history\\provinces" << _filename;
