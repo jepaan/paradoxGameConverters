@@ -1,4 +1,4 @@
-/*Copyright (c) 2014 The Paradox Game Converters Project
+/*Copyright (c) 2016 The Paradox Game Converters Project
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
@@ -19,19 +19,16 @@ CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 
+
+
 #include "OSCompatabilityLayer.h"
-
-
-
 #include <algorithm>
 #include <iomanip>
 #include <iostream>
 #include <set>
 #include <sstream>
 #include <utility>
-
 #include <boost/algorithm/string.hpp>
-
 #include "EU4World/EU4World.h"
 #include "EU4World/EU4Country.h"
 #include "EU4World/EU4Province.h"
@@ -41,9 +38,9 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 #include "V2World/V2Country.h"
 #include "V2World/V2Province.h"
 #include "Log.h"
-#include "WinUtils.h"
-
 #include "CountryMapping.h"
+
+
 
 bool CountryMapping::ReadRules(const std::string& fileName)
 {

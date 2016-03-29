@@ -1,4 +1,4 @@
-/*Copyright (c) 2014 The Paradox Game Converters Project
+/*Copyright (c) 2016 The Paradox Game Converters Project
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
@@ -20,8 +20,8 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 
 
-#include "../OSCompatabilityLayer.h"
 
+#include "../OSCompatabilityLayer.h"
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -32,14 +32,11 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 #include <cmath>
 #include <cfloat>
 #include <sys/stat.h>
-
 #include <boost/filesystem.hpp>
-
 #include "../Parsers/Parser.h"
 #include "../Log.h"
 #include "../Mapper.h"
 #include "../Configuration.h"
-#include "../WinUtils.h"
 #include "../EU4World/EU4World.h"
 #include "../EU4World/EU4Relations.h"
 #include "../EU4World/EU4Leader.h"
@@ -55,8 +52,8 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 #include "V2Reforms.h"
 #include "V2Flags.h"
 #include "V2LeaderTraits.h"
-
 #include "V2World.h"
+
 
 
 typedef struct fileWithCreateTime
@@ -89,7 +86,7 @@ V2World::V2World(const minorityPopMapping& minorities)
             }
             for(boost::filesystem::directory_entry& file : boost::filesystem::directory_iterator(string("./blankMod/output/history/provinces") + directories.front() + "/*.*"))
             {
-              V2Province* newProvince = new V2Province(directories.front() + "/" + file.path().native());
+              V2Province* newProvince = new V2Province(directories.front() + "/" + file.path().string());
               provinces.insert(make_pair(newProvince->getNum(), newProvince));
             }
             directories.pop_front();
@@ -106,7 +103,7 @@ V2World::V2World(const minorityPopMapping& minorities)
             }
             for(boost::filesystem::directory_entry& file : boost::filesystem::directory_iterator(string("./blankMod/output/history/provinces") + directories.front() + "/*.*"))
             {
-              V2Province* newProvince = new V2Province(directories.front() + "/" + file.path().native());
+              V2Province* newProvince = new V2Province(directories.front() + "/" + file.path().string());
               provinces.insert(make_pair(newProvince->getNum(), newProvince));
             }
             directories.pop_front();

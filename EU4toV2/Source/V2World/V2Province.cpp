@@ -1,4 +1,4 @@
-/*Copyright (c) 2014 The Paradox Game Converters Project
+/*Copyright (c) 2016 The Paradox Game Converters Project
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
@@ -20,13 +20,12 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 
 
+
 #include <sstream>
 #include <algorithm>
 #include <string>
 #include <stdio.h>
-
 #include <boost/filesystem.hpp>
-
 #include "../OSCompatabilityLayer.h"
 #include "../Log.h"
 #include "../Parsers/Object.h"
@@ -36,9 +35,9 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 #include "V2Pop.h"
 #include "V2Country.h"
 #include "V2Factory.h"
-#include "../WinUtils.h"
-
 #include "V2Province.h"
+
+
 
 V2Province::V2Province(std::string _filename)
 {

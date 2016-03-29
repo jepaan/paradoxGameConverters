@@ -1,4 +1,4 @@
-/*Copyright (c) 2014 The Paradox Game Converters Project
+/*Copyright (c) 2016 The Paradox Game Converters Project
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
@@ -401,7 +401,7 @@ void V2Country::initFromEU4Country(EU4Country* _srcCountry, const CountryMapping
         {
           for(boost::filesystem::directory_entry& file : boost::filesystem::directory_iterator("./blankMod/output/history/countries/" + tag + "*.txt"))
           {
-            filename = file.path().native();
+            filename = file.path().string();
             break;
           }
         }
@@ -412,7 +412,7 @@ void V2Country::initFromEU4Country(EU4Country* _srcCountry, const CountryMapping
           {
             for(boost::filesystem::directory_entry& file : boost::filesystem::directory_iterator(filesearch))
             {
-              filename = file.path().native();
+              filename = file.path().string();
               break;
             }
           }
@@ -792,7 +792,7 @@ void V2Country::initFromHistory()
         {
           for(boost::filesystem::directory_entry& file : boost::filesystem::directory_iterator(filesearch))
           {
-            filename = file.path().native();
+            filename = file.path().string();
             break;
           }
         }
@@ -803,7 +803,7 @@ void V2Country::initFromHistory()
           {
             for(boost::filesystem::directory_entry& file : boost::filesystem::directory_iterator(filesearch))
             {
-              filename = file.path().native();
+              filename = file.path().string();
               break;
             }
           }
