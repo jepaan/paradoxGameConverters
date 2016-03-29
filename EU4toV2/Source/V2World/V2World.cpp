@@ -31,7 +31,6 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 #include <queue>
 #include <cmath>
 #include <cfloat>
-#include <sys/stat.h>
 #include <boost/filesystem.hpp>
 #include "../Parsers/Parser.h"
 #include "../Log.h"
@@ -96,14 +95,9 @@ V2World::V2World(const minorityPopMapping& minorities)
 	{
           while (directories.size() > 0)
           {
-            if(!boost::filesystem::exists(Configuration::getV2Path() + "/history/provinces" + directories.front() + "/*.*") || !boost::filesystem::is_directory(Configuration::getV2Path() + "/history/provinces" + directories.front() + "/*.*"))
+            for(boost::filesystem::directory_entry& file : boost::filesystem::directory_iterator(string(Configuration::getV2Path() + "/history/provinces" + directories.front())))
             {
-              LOG(LogLevel::Error) << "./blankMod/output/history/provinces" << directories.front() << "/*.*";
-              exit(-1);
-            }
-            for(boost::filesystem::directory_entry& file : boost::filesystem::directory_iterator(string("./blankMod/output/history/provinces") + directories.front() + "/*.*"))
-            {
-              V2Province* newProvince = new V2Province(directories.front() + "/" + file.path().string());
+              V2Province* newProvince = new V2Province(file.path().string());
               provinces.insert(make_pair(newProvince->getNum(), newProvince));
             }
             directories.pop_front();
