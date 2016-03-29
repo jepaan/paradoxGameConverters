@@ -62,4 +62,21 @@ Configuration::Configuration()
 	libertyThreshold	= atof(obj[0]->getLeaf("libertyThreshold").c_str());
 	convertPopTotals	= (obj[0]->getLeaf("convertPopTotals") == "yes");
 	outputName			= "";
+        trimPaths();
 }
+
+void Configuration::trimPaths()
+{
+  trimPath(EU4Path);
+  trimPath(EU4DocumentsPath);
+  trimPath(CK2ExportPath);
+  trimPath(V2Path);
+  trimPath(V2DocumentsPath);
+}
+
+void Configuration::trimPath(std::string& path)
+{
+  if(path.back() == '/' || path.back() == '\\')
+    path.pop_back();
+}
+
