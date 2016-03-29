@@ -161,12 +161,12 @@ typedef struct {
 adjacencyMapping initAdjacencyMap()
 {
 	FILE* adjacenciesBin = NULL;	// the adjacencies.bin file
-	string filename = Configuration::getV2DocumentsPath() + "\\map\\cache\\adjacencies.bin";	// the path and filename for adjacencies.bin
+	string filename = Configuration::getV2DocumentsPath() + "/map/cache/adjacencies.bin";	// the path and filename for adjacencies.bin
         boost::filesystem::file_status st = boost::filesystem::status(filename);
 	if (boost::filesystem::exists(st))
 	{
 		LOG(LogLevel::Warning) << "Could not find " << filename << " - looking in install folder";
-		filename = Configuration::getV2Path() + "\\map\\cache\\adjacencies.bin";
+		filename = Configuration::getV2Path() + "/map/cache/adjacencies.bin";
 	}
 	fopen_s(&adjacenciesBin, filename.c_str(), "rb");
 	if (adjacenciesBin == NULL)
