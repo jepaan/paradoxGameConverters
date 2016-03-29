@@ -1,4 +1,4 @@
-/*Copyright (c) 2014 The Paradox Game Converters Project
+/*Copyright (c) 2016 The Paradox Game Converters Project
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
@@ -19,17 +19,16 @@ CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 
-#include "OSCompatabilityLayer.h"
 
+
+#include "OSCompatabilityLayer.h"
 #include <fstream>
-#include <sys/io.h>
+#include <io.h>
 #include <stdexcept>
 #include <string>
 #include <stdio.h>
 #include <stdlib.h>
-
 #include <boost/filesystem.hpp>
-
 #include "Configuration.h"
 #include "Log.h"
 #include "Parsers/Parser.h"
@@ -41,12 +40,13 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 #include "V2World/V2TechSchools.h"
 #include "V2World/V2LeaderTraits.h"
 
+
 // Converts the given EU4 save into a V2 mod.
 // Returns 0 on success or a non-zero failure code on error.
 int ConvertEU4ToV2(const std::string& EU4SaveFileName)
 {
 	char curDir[MAX_PATH];
-	Utils::GetCurrentDirectory(MAX_PATH, curDir);
+	Utils::getCurrentDirectory(MAX_PATH, curDir);
 	LOG(LogLevel::Debug) << "Current directory is " << curDir;
 
 	Configuration::getInstance();
@@ -292,7 +292,7 @@ int ConvertEU4ToV2(const std::string& EU4SaveFileName)
 				if (modItr != possibleMods.end())
 				{
 					string newModPath = modItr->second;	// the path for this mod
-					if (!boost::filesystem::exists(newModPath) || boost::filesystem::is_directory(newModPath))
+					if (!boost::filesystem::exists(newModPath) || !boost::filesystem::is_directory(newModPath))
 					{
 						LOG(LogLevel::Error) << newMod << " could not be found in the specified mod directory - a valid mod directory must be specified. Tried " << newModPath;
 						exit(-1);
@@ -398,7 +398,7 @@ int ConvertEU4ToV2(const std::string& EU4SaveFileName)
 		{
                         for(boost::filesystem::directory_entry& file : boost::filesystem::directory_iterator(string(*itr + "/common/cultures/")))
                         {
-                          string modCultureFile(*itr + "/common/cultures/" + file.path().native());    // the path and name of the culture file in this mod
+                          string modCultureFile(*itr + "/common/cultures/" + file.path().string());    // the path and name of the culture file in this mod
                           culturesObj = doParseFile(modCultureFile.c_str());
                           if (culturesObj == NULL)
                           {
@@ -462,7 +462,7 @@ int ConvertEU4ToV2(const std::string& EU4SaveFileName)
                 {
                         for(boost::filesystem::directory_entry& file : boost::filesystem::directory_iterator(string(EU4Loc + "/common/units/")))
                         {
-                          string unitFilename = file.path().native();
+                          string unitFilename = file.path().string();
                           string unitName = unitFilename.substr(0, unitFilename.find_first_of('.'));
                           AddUnitFileToRegimentTypeMap((EU4Loc + "/common/units"), unitName, rtm);
                         }
@@ -617,7 +617,7 @@ int ConvertEU4ToV2(const std::string& EU4SaveFileName)
                 {
                         for(boost::filesystem::directory_entry& file : boost::filesystem::directory_iterator(string(*itr + "/common/religions/")))
                         {
-                          string modReligionFile(*itr + "/common/religions/" + file.path().native());  // the path and name of the religions file in this mod
+                          string modReligionFile(*itr + "/common/religions/" + file.path().string());  // the path and name of the religions file in this mod
                           if(boost::filesystem::exists(modReligionFile) && boost::filesystem::is_regular_file(modReligionFile))
                           {
                                   religionsObj = doParseFile(modReligionFile.c_str());
@@ -761,7 +761,7 @@ int ConvertEU4ToV2(const std::string& EU4SaveFileName)
                 {
                         for(boost::filesystem::directory_entry& file : boost::filesystem::directory_iterator(string(*itr + "/common/colonial_regions/")))
                         {
-                          string modRegionsFile(*itr + "/common/colonial_regions/" + file.path().native());    // the path and name of the colonial regions file in this mod
+                          string modRegionsFile(*itr + "/common/colonial_regions/" + file.path().string());    // the path and name of the colonial regions file in this mod
                           if(boost::filesystem::exists(modRegionsFile) && boost::filesystem::is_regular_file(modRegionsFile))
                           {
                                   colonialRegionsObj = doParseFile(modRegionsFile.c_str());

@@ -1,4 +1,4 @@
-/*Copyright (c) 2014 The Paradox Game Converters Project
+/*Copyright (c) 2016 The Paradox Game Converters Project
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
@@ -22,19 +22,41 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 
 
 #include "OSCompatabilityLayer.h"
-
 #include <iostream>
-
 #include <Windows.h>
-
+#include <boost/filesystem.hpp>
 #include "Log.h"
 
-namespace WinUtils {
+
+
+std::string GetLastWindowsError()
+{
+	DWORD errorCode = ::GetLastError();	// the code for the latest error
+	const DWORD errorBufferSize = 256;	// the size of the textbuffer for the error
+	CHAR errorBuffer[errorBufferSize];	// the text buffer for the error
+	BOOL success = ::FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM,		// whether or not the error could be formatted
+		NULL,
+		errorCode,
+		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+		errorBuffer,
+		errorBufferSize - 1,
+		NULL);
+	if (success)
+	{
+		return errorBuffer;
+	}
+	else
+	{
+		return "Unknown error";
+	}
+}
+
+namespace Utils {
 
 bool TryCreateFolder(const std::string& path)
 {
 	BOOL success = ::CreateDirectory(path.c_str(), NULL);
-	if (success || GetLastError() == 183)	// 183 is if the folder already exists
+	if (success || ::GetLastError() == 183)	// 183 is if the folder already exists
 	{
 		return true;
 	}
@@ -47,20 +69,16 @@ bool TryCreateFolder(const std::string& path)
 
 void GetAllFilesInFolder(const std::string& path, std::set<std::string>& fileNames)
 {
-	WIN32_FIND_DATA findData;	// the structure to hold the file data
-	HANDLE findHandle = FindFirstFile((path + "\\*").c_str(), &findData);	// the results of the file search
-	if (findHandle == INVALID_HANDLE_VALUE)
+	if(doesFolderExist(path))
 	{
-		return;
-	}
-	do
-	{
-		if (!(findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
+		for(boost::filesystem::directory_entry& file : boost::filesystem::directory_iterator(path))
 		{
-			fileNames.insert(findData.cFileName);
+			if (!boost::filesystem::is_directory(file))
+			{
+				fileNames.insert(file.path().string());
+			}
 		}
-	} while (FindNextFile(findHandle, &findData) != 0);
-	FindClose(findHandle);
+	}
 }
 
 bool TryCopyFile(const std::string& sourcePath, const std::string& destPath)
@@ -91,27 +109,7 @@ bool doesFolderExist(const std::string& path)
 }
 
 
-std::string GetLastWindowsError()
-{
-	DWORD errorCode = ::GetLastError();	// the code for the latest error
-	const DWORD errorBufferSize = 256;	// the size of the textbuffer for the error
-	CHAR errorBuffer[errorBufferSize];	// the text buffer for the error
-	BOOL success = ::FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM,		// whether or not the error could be formatted
-		NULL,
-		errorCode,
-		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-		errorBuffer,
-		errorBufferSize - 1,
-		NULL);
-	if (success)
-	{
-		return errorBuffer;
-	}
-	else
-	{
-		return "Unknown error";
-	}
-}
+
 
 int DeleteFolder(const std::string &refcstrRootDirectory,
 	bool              bDeleteSubdirectories)
@@ -196,7 +194,7 @@ int ToMultiByte(wchar_t* in, int inSize, char* out, int outSize)
   return WideCharToMultiByte(1252, WC_NO_BEST_FIT_CHARS | WC_COMPOSITECHECK | WC_DEFAULTCHAR, in, inSize, out, outSize, "0", NULL);
 }
 
-void WriteToConsole(int level, const std::string& logMessage)
+void WriteToConsole(LogLevel level, const std::string& logMessage)
 {
 	if (level == LogLevel::Debug)
 	{	// Don't log debug messages to console.
@@ -243,4 +241,24 @@ void WriteToConsole(int level, const std::string& logMessage)
 	std::cout << logMessage;
 }
 
-} // namespace WinUtils
+void getCurrentDirectory(uint32_t length, char directory[MAX_PATH])
+{
+	GetCurrentDirectory(length, directory);
+}
+
+int FromMultiByte(const char* in, size_t inSize, wchar_t* out, size_t outSize)
+{
+	return -1;
+}
+
+int ToMultiByte(const wchar_t* in, size_t inSize, char* out, size_t outSize)
+{
+	return -1;
+}
+
+std::string GetLastError()
+{
+	return GetLastWindowsError();
+}
+
+} // namespace Utils

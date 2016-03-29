@@ -109,7 +109,6 @@
     <ClInclude Include="Source\Log.h" />
     <ClInclude Include="Source\Mapper.h" />
     <ClInclude Include="Source\targa.h" />
-    <ClInclude Include="Source\WinUtils.h" />
     <ClInclude Include="Source\EU4World\EU4Army.h">
       <Filter>EU4 World</Filter>
     </ClInclude>
@@ -200,6 +199,7 @@
     <ClInclude Include="Source\Parsers\Parser.h">
       <Filter>Parser</Filter>
     </ClInclude>
+    <ClInclude Include="Source\OSCompatabilityLayer.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="EU4 World">

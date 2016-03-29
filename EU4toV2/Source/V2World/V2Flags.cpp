@@ -1,4 +1,4 @@
-/*Copyright (c) 2014 The Paradox Game Converters Project
+/*Copyright (c) 2016 The Paradox Game Converters Project
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
@@ -19,22 +19,22 @@ CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 
-#include "../OSCompatabilityLayer.h"
 
+
+#include "../OSCompatabilityLayer.h"
 #include <chrono>
 #include <iostream>
 #include <iterator>
 #include <random>
-
 #include <boost/algorithm/string/predicate.hpp>
-
 #include "../EU4World/EU4Country.h"
 #include "V2Country.h"
 #include "../Configuration.h"
 #include "../Log.h"
 #include "../FlagUtils.h"
-
 #include "V2Flags.h"
+
+
 
 const std::vector<std::string> V2Flags::flagFileSuffixes = { ".tga", "_communist.tga", "_fascist.tga", "_monarchy.tga", "_republic.tga" };
 

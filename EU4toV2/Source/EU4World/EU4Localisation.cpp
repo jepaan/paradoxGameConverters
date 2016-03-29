@@ -1,4 +1,4 @@
-/*Copyright (c) 2014 The Paradox Game Converters Project
+/*Copyright (c) 2016 The Paradox Game Converters Project
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
@@ -74,7 +74,7 @@ void EU4Localisation::ReadFromAllFilesInFolder(const std::string& folderPath)
         }
         for(boost::filesystem::directory_entry& file : boost::filesystem::directory_iterator(folderPath))
         {
-          fileNames.push_back(file.path().native());
+          fileNames.push_back(file.path().string());
         }
 	// Read all these files.
 	for (const auto& fileName : fileNames)
