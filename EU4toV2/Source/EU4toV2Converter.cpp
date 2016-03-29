@@ -23,7 +23,6 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 
 #include "OSCompatabilityLayer.h"
 #include <fstream>
-#include <io.h>
 #include <stdexcept>
 #include <string>
 #include <stdio.h>
