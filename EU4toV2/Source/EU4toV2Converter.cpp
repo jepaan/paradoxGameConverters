@@ -875,9 +875,9 @@ int ConvertEU4ToV2(const std::string& EU4SaveFileName)
 
 	// Output results
 	LOG(LogLevel::Info) << "Outputting mod";
-	system("%systemroot%\\System32\\xcopy blankMod output /E /Q /Y /I");
-	FILE* modFile;	// the .mod file for this mod
-	if (fopen_s(&modFile, ("Output/" + Configuration::getOutputName() + ".mod").c_str(), "w") != 0)
+        boost::filesystem::rename("blankMod", "output");
+	FILE* modFile = NULL;	// the .mod file for this mod
+	if (fopen_s(&modFile, ("output/" + Configuration::getOutputName() + ".mod").c_str(), "w") != 0)
 	{
 		LOG(LogLevel::Error) << "Could not create .mod file";
 		exit(-1);
@@ -900,8 +900,7 @@ int ConvertEU4ToV2(const std::string& EU4SaveFileName)
 	fprintf(modFile, "replace = \"localisation/0_Religions.csv\"\n");
 	fprintf(modFile, "replace = \"history/wars\"\n");
 	fclose(modFile);
-	string renameCommand = "move /Y output\\output output\\" + Configuration::getOutputName();	// the command to rename the mod correctly
-	system(renameCommand.c_str());
+	boost::filesystem::rename("output/output", "output/" + Configuration::getOutputName());
 	destWorld.setFlagColourMapping(flagColourMapping);
 	destWorld.output();
 

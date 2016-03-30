@@ -78,14 +78,9 @@ V2World::V2World(const minorityPopMapping& minorities)
         {
           while (directories.size() > 0)
           {
-            if(!boost::filesystem::exists(string("./blankMod/output/history/provinces") + directories.front() + "/*.*") || !boost::filesystem::is_directory(string("./blankMod/output/history/provinces") + directories.front() + "/*.*"))
+            for(boost::filesystem::directory_entry& file : boost::filesystem::directory_iterator(string("./blankMod/output/history/provinces") + directories.front()))
             {
-              LOG(LogLevel::Error) << "./blankMod/output/history/provinces" << directories.front() << "/*.*";
-              exit(-1);
-            }
-            for(boost::filesystem::directory_entry& file : boost::filesystem::directory_iterator(string("./blankMod/output/history/provinces") + directories.front() + "/*.*"))
-            {
-              V2Province* newProvince = new V2Province(directories.front() + "/" + file.path().string());
+              V2Province* newProvince = new V2Province(file.path().string());
               provinces.insert(make_pair(newProvince->getNum(), newProvince));
             }
             directories.pop_front();
@@ -124,7 +119,7 @@ V2World::V2World(const minorityPopMapping& minorities)
 	for (std::set<std::string>::iterator itr = fileNames.begin(); itr != fileNames.end(); itr++)
 	{
 		list<int>* popProvinces = new list<int>;
-		Object*	obj2	= doParseFile(("./blankMod/output/history/pops/1836.1.1/" + *itr).c_str());				// generic object
+		Object*	obj2	= doParseFile(itr->c_str());				// generic object
 		std::vector<Object*> leaves = obj2->getLeaves();
 		for (unsigned int j = 0; j < leaves.size(); j++)
 		{
@@ -297,7 +292,7 @@ V2World::V2World(const minorityPopMapping& minorities)
 		tag = line.substr(0, 3);
 
 		std::string countryFileName;
-		int start			= line.find_first_of('/');
+		int start			= line.find_first_of('/') + 1;
 		int size				= line.find_last_of('\"') - start;
 		countryFileName	= line.substr(start, size);
 
@@ -352,7 +347,7 @@ V2World::V2World(const minorityPopMapping& minorities)
 void V2World::output() const
 {
 	// Create common\countries path.
-	std::string countriesPath = "Output/" + Configuration::getOutputName() + "/common/countries";
+	std::string countriesPath = "output/" + Configuration::getOutputName() + "/common/countries";
 	if (!Utils::TryCreateFolder(countriesPath))
 	{
 		return;
@@ -361,7 +356,7 @@ void V2World::output() const
 	// Output common\countries.txt
 	LOG(LogLevel::Debug) << "Writing countries file";
 	FILE* allCountriesFile;
-	if (fopen_s(&allCountriesFile, ("Output/" + Configuration::getOutputName() + "/common/countries.txt").c_str(), "w") != 0)
+	if (fopen_s(&allCountriesFile, ("output/" + Configuration::getOutputName() + "/common/countries.txt").c_str(), "w") != 0)
 	{
 		LOG(LogLevel::Error) << "Could not create countries file";
 		exit(-1);
