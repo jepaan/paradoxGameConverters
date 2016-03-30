@@ -877,7 +877,7 @@ int ConvertEU4ToV2(const std::string& EU4SaveFileName)
 	LOG(LogLevel::Info) << "Outputting mod";
 	system("%systemroot%\\System32\\xcopy blankMod output /E /Q /Y /I");
 	FILE* modFile;	// the .mod file for this mod
-	if (fopen_s(&modFile, ("Output\\" + Configuration::getOutputName() + ".mod").c_str(), "w") != 0)
+	if (fopen_s(&modFile, ("Output/" + Configuration::getOutputName() + ".mod").c_str(), "w") != 0)
 	{
 		LOG(LogLevel::Error) << "Could not create .mod file";
 		exit(-1);

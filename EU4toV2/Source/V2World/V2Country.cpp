@@ -168,7 +168,7 @@ void V2Country::output() const
 	if(!dynamicCountry)
 	{
 		FILE* output;
-		if (fopen_s(&output, ("Output\\" + Configuration::getOutputName() + "\\history\\countries\\" + filename).c_str(), "w") != 0)
+		if (fopen_s(&output, ("Output/" + Configuration::getOutputName() + "/history/countries/" + filename).c_str(), "w") != 0)
 		{
 			LOG(LogLevel::Error) << "Could not create country history file " << filename;
 			exit(-1);
@@ -283,10 +283,10 @@ void V2Country::output() const
 	if (newCountry)
 	{
 		// Output common country file. 
-		std::ofstream commonCountryOutput("Output\\" + Configuration::getOutputName() + "\\common\\countries\\" + commonCountryFile);
+		std::ofstream commonCountryOutput("Output/" + Configuration::getOutputName() + "/common/countries/" + commonCountryFile);
 		if (!commonCountryOutput.is_open())
 		{
-			LOG(LogLevel::Error) << "Could not open Output\\" + Configuration::getOutputName() + "\\common\\countries\\" + commonCountryFile;
+			LOG(LogLevel::Error) << "Could not open Output/" + Configuration::getOutputName() + "/common/countries/" + commonCountryFile;
 			exit(-1);
 		}
 		commonCountryOutput << "graphical_culture = UsGC\n";	// default to US graphics
@@ -357,7 +357,7 @@ void V2Country::outputElection(FILE* output) const
 void V2Country::outputOOB() const
 {
 	FILE* output;
-	if (fopen_s(&output, ("Output\\" + Configuration::getOutputName() + "\\history\\units\\" + tag + "_OOB.txt").c_str(), "w") != 0)
+	if (fopen_s(&output, ("Output/" + Configuration::getOutputName() + "/history/units/" + tag + "_OOB.txt").c_str(), "w") != 0)
 	{
 		LOG(LogLevel::Error) << "Could not create OOB file " << (tag + "_OOB.txt");
 		exit(-1);
@@ -407,7 +407,7 @@ void V2Country::initFromEU4Country(EU4Country* _srcCountry, const CountryMapping
         }
 	if (filename == "")
 	{
-          string filesearch = Configuration::getV2Path() + "\\history\\countries\\" + tag + "*.txt";
+          string filesearch = Configuration::getV2Path() + "/history/countries/" + tag + "*.txt";
           if(boost::filesystem::exists(filesearch) && boost::filesystem::is_directory(filesearch))
           {
             for(boost::filesystem::directory_entry& file : boost::filesystem::directory_iterator(filesearch))
@@ -787,7 +787,7 @@ void V2Country::initFromEU4Country(EU4Country* _srcCountry, const CountryMapping
 void V2Country::initFromHistory()
 {
 	string fullFilename;
-	string filesearch = ".\\blankMod\\output\\history\\countries\\" + tag + "*.txt";
+	string filesearch = "./blankMod/output/history/countries/" + tag + "*.txt";
 	if(boost::filesystem::exists(filesearch) && boost::filesystem::is_directory(filesearch))
         {
           for(boost::filesystem::directory_entry& file : boost::filesystem::directory_iterator(filesearch))
@@ -798,7 +798,7 @@ void V2Country::initFromHistory()
         }
         if (filename == "")
         {
-          string filesearch = Configuration::getV2Path() + "\\history\\countries\\" + tag + "*.txt";
+          string filesearch = Configuration::getV2Path() + "/history/countries/" + tag + "*.txt";
           if(boost::filesystem::exists(filesearch) && boost::filesystem::is_directory(filesearch))
           {
             for(boost::filesystem::directory_entry& file : boost::filesystem::directory_iterator(filesearch))
