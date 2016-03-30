@@ -445,15 +445,7 @@ Object* doParseFile(const char* filename)
 	read.open(filename); 
 	if (!read.is_open())
 	{
-                char newPath[250];
-                memset(newPath, 0, sizeof(newPath));
-                strcat(newPath, "../Data_Files/");
-                strcat(newPath, filename);
-                read.open(newPath);
-                if (!read.is_open())
-                {
-                      return NULL;
-                }
+		return NULL;
 	}
 	readFile(read);  
 	read.close();
