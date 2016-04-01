@@ -27,7 +27,7 @@ void strcpy_s_Linux(char *__restrict __dest, const char *__restrict __src)
 int fopen_s_Linux(FILE** file, const char* filename, const char* mode)
 {
   *file = fopen(filename, mode);
-  return *file != NULL;
+  return *file == NULL;
 }
 
 void fprintf_s_Linux(FILE* file, const char* format, ...)

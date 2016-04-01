@@ -304,6 +304,10 @@ void EU4World::readCommonCountries(istream& in, const std::string& rootPath)
 			return;
 		}
 		std::string countryLine = line;
+                if(countryLine.back() == '\r')
+                {
+                        countryLine.pop_back();
+                }
 		if (countryLine.size() >= 6 && countryLine[0] != '#')
 		{
 			// First three characters must be the tag.
@@ -317,13 +321,16 @@ void EU4World::readCommonCountries(istream& in, const std::string& rootPath)
 				size_t beginPos = countryLine.find_first_not_of(' ', equalPos + 1);
 				size_t endPos = countryLine.find_last_not_of(' ') + 1;
 				std::string fileName = countryLine.substr(beginPos, endPos - beginPos);
-				if (fileName.front() == '"' && fileName.back() == '"')
+				if (fileName.front() == '\"')
 				{
-					fileName = fileName.substr(1, fileName.size() - 2);
+					fileName = fileName.substr(1, fileName.size() - 1);
 				}
-				std::replace(fileName.begin(), fileName.end(), '/', '\\');
+				if(fileName.back() == '\"')
+                                {
+                                        fileName.pop_back();
+                                }
 				// Parse the country file.
-				std::string path = rootPath + "\\common\\" + fileName;
+				std::string path = rootPath + "/common/" + fileName;
 				size_t lastPathSeparatorPos = path.find_last_of('\\');
 				std::string localFileName = path.substr(lastPathSeparatorPos + 1, string::npos);
 				country->readFromCommonCountry(localFileName, doParseFile(path.c_str()));

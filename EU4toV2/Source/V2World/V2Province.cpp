@@ -78,20 +78,20 @@ V2Province::V2Province(std::string _filename)
 
 	resettable			= false;
 
-	int slash		= filename.find_last_of("\\");
+	int slash		= filename.find_last_of("/");
 	int numDigits	= filename.find_first_of("-") - slash - 2;
 	std::string temp		= filename.substr(slash + 1, numDigits);
 	num				= atoi(temp.c_str());
 
 	Object* obj;
-        std::string path = ".\\blankMod\\output\\history\\provinces" + _filename;
+        std::string path = "./blankMod/output/history/provinces" + _filename;
         boost::filesystem::file_status st = boost::filesystem::status(path);
         if(boost::filesystem::exists(st))
 	{
-		obj = doParseFile((std::string(".\\blankMod\\output\\history\\provinces") + _filename).c_str());
+		obj = doParseFile((std::string("./blankMod/output/history/provinces") + _filename).c_str());
 		if (obj == NULL)
 		{
-			LOG(LogLevel::Error) << "Could not parse .\\blankMod\\output\\history\\provinces" << _filename;
+			LOG(LogLevel::Error) << "Could not parse ./blankMod/output/history/provinces" << _filename;
 			exit(-1);
 		}
 	}
@@ -100,7 +100,7 @@ V2Province::V2Province(std::string _filename)
 		obj = doParseFile(_filename.c_str());
 		if (obj == NULL)
 		{
-			LOG(LogLevel::Error) << "Could not parse " << Configuration::getV2Path() << "\\history\\provinces" << _filename;
+			LOG(LogLevel::Error) << "Could not parse " << Configuration::getV2Path() << "/history/provinces" << _filename;
 			exit(-1);
 		}
 	}
@@ -175,9 +175,9 @@ V2Province::V2Province(std::string _filename)
 void V2Province::output() const
 {
 	FILE* output;
-	if (fopen_s(&output, ("Output\\" + Configuration::getOutputName() + "\\history\\provinces\\" + filename).c_str(), "w") != 0)
+	if (fopen_s(&output, ("output/" + Configuration::getOutputName() + "/history/provinces/" + filename).c_str(), "w") != 0)
 	{
-		LOG(LogLevel::Error) << "Could not create province history file Output\\" << Configuration::getOutputName() << "\\history\\provinces\\" << filename << " - " << Utils::GetLastError();
+		LOG(LogLevel::Error) << "Could not create province history file Output/" << Configuration::getOutputName() << "/history/provinces/" << filename << " - " << Utils::GetLastError();
 		exit(-1);
 	}
 	if (owner != "")
