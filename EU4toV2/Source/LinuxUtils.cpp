@@ -47,7 +47,7 @@ namespace Utils
 {
   bool TryCreateFolder(const std::string& path)
   {
-      return boost::filesystem::create_directory(path, lastError);
+      return doesFolderExist(path) || boost::filesystem::create_directory(path, lastError);
   }
   
   void getCurrentDirectory(uint32_t length, char directory[MAX_PATH])
