@@ -30,7 +30,10 @@ namespace Utils
     {
       for(boost::filesystem::directory_entry& file : boost::filesystem::directory_iterator(path))
       {
-        fileNames.insert(file.path().string());
+        if(boost::filesystem::is_regular_file(file))
+        {
+          fileNames.insert(file.path().string());
+        }
       }
     }
   }
