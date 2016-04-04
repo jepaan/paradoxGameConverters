@@ -78,7 +78,7 @@ namespace Utils
   
   bool TryCopyFile(const std::string& sourcePath, const std::string& destPath)
   {
-    boost::system::error_code prevError;
+    boost::system::error_code prevError = lastError;
     boost::filesystem::copy_file(sourcePath, destPath, lastError);
     return prevError == lastError;
   }
