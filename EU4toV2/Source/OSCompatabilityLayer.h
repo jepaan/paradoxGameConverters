@@ -103,6 +103,9 @@ std::string GetLastError();
 // Recursively deletes a folder
 int DeleteFolder(const std::string &refcstrRootDirectory, bool bDeleteSubdirectories = true);
 
+
+std::string GetFileFromTag(const std::string& directoryPath, const std::string& tag);
+
 } // namespace Utils
 
 #endif //OS_COMPATABILITY_LAYER_H

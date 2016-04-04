@@ -76,17 +76,6 @@ namespace Utils
     boost::filesystem::current_path(directory, lastError);
   }
   
-  void GetAllFilesInFolder(const std::string& path, std::set<std::string>& fileNames)
-  {
-    if(doesFolderExist(path))
-    {
-      for(boost::filesystem::directory_entry& file : boost::filesystem::directory_iterator(path))
-      {
-        fileNames.insert(file.path().native());
-      }
-    }
-  }
-  
   bool TryCopyFile(const std::string& sourcePath, const std::string& destPath)
   {
     boost::system::error_code prevError;

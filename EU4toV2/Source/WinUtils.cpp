@@ -67,20 +67,6 @@ bool TryCreateFolder(const std::string& path)
 	}
 }
 
-void GetAllFilesInFolder(const std::string& path, std::set<std::string>& fileNames)
-{
-	if(doesFolderExist(path))
-	{
-		for(boost::filesystem::directory_entry& file : boost::filesystem::directory_iterator(path))
-		{
-			if (!boost::filesystem::is_directory(file))
-			{
-				fileNames.insert(file.path().string());
-			}
-		}
-	}
-}
-
 bool TryCopyFile(const std::string& sourcePath, const std::string& destPath)
 {
 	BOOL success = ::CopyFile(sourcePath.c_str(), destPath.c_str(), FALSE);	// whether or not the copy succeeded
